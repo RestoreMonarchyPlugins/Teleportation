@@ -8,6 +8,16 @@
 * Download the NUPKG file from here
 * Download the .dll file from here 
 
+## Commands
+* /tprequest <player> - Sends a request to the player
+* /tpaccept (player) - Accepts teleportation
+* /tplist - Displays a list of teleportation from and to you
+* /tpcancel (player) - Cancels your request to the player
+* /home (name) - Teleports you to bed
+* /homes - Displays a list of your beds
+* /renamehome <oldName> <newName> - Renames your bed with old name to new name <br />
+<> means required parameter & () means optional parameter
+
 ## Configuration
 ```yml
 TPEnabled: true

@@ -1,0 +1,882 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.6.1": {
+      "Lib.Harmony/1.2.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/0Harmony.dll": {}
+        },
+        "runtime": {
+          "lib/net45/0Harmony.dll": {}
+        }
+      },
+      "LiteDB/4.1.4": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System"
+        ],
+        "compile": {
+          "lib/net40/LiteDB.dll": {}
+        },
+        "runtime": {
+          "lib/net40/LiteDB.dll": {}
+        }
+      },
+      "Microsoft.CSharp/4.5.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "Microsoft.CSharp"
+        ],
+        "compile": {
+          "ref/net45/_._": {}
+        },
+        "runtime": {
+          "lib/net45/_._": {}
+        }
+      },
+      "morelinq/3.1.0": {
+        "type": "package",
+        "dependencies": {
+          "System.ValueTuple": "4.4.0"
+        },
+        "frameworkAssemblies": [
+          "System",
+          "System.Data",
+          "System.Data.DataSetExtensions",
+          "System.Xml"
+        ],
+        "compile": {
+          "lib/net451/MoreLinq.dll": {}
+        },
+        "runtime": {
+          "lib/net451/MoreLinq.dll": {}
+        }
+      },
+      "Newtonsoft.Json/12.0.1": {
+        "type": "package",
+        "compile": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/net45/Newtonsoft.Json.dll": {}
+        }
+      },
+      "NuGet.Common/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Frameworks": "4.9.4"
+        },
+        "frameworkAssemblies": [
+          "System.Core",
+          "System.IO.Compression"
+        ],
+        "compile": {
+          "lib/net46/NuGet.Common.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Common.dll": {}
+        }
+      },
+      "NuGet.Configuration/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Common": "4.9.4"
+        },
+        "frameworkAssemblies": [
+          "System.Security",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net46/NuGet.Configuration.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Configuration.dll": {}
+        }
+      },
+      "NuGet.Frameworks/4.9.4": {
+        "type": "package",
+        "compile": {
+          "lib/net46/NuGet.Frameworks.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Frameworks.dll": {}
+        }
+      },
+      "NuGet.Packaging/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "Newtonsoft.Json": "9.0.1",
+          "NuGet.Configuration": "4.9.4",
+          "NuGet.Packaging.Core": "4.9.4"
+        },
+        "frameworkAssemblies": [
+          "System.IO.Compression",
+          "System.Security",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net46/NuGet.Packaging.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Packaging.dll": {}
+        }
+      },
+      "NuGet.Packaging.Core/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Common": "4.9.4",
+          "NuGet.Versioning": "4.9.4"
+        },
+        "frameworkAssemblies": [
+          "System.IO.Compression",
+          "System.Xml",
+          "System.Xml.Linq"
+        ],
+        "compile": {
+          "lib/net46/NuGet.Packaging.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Packaging.Core.dll": {}
+        }
+      },
+      "NuGet.Protocol/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Configuration": "4.9.4",
+          "NuGet.Packaging": "4.9.4"
+        },
+        "frameworkAssemblies": [
+          "System.IO.Compression",
+          "System.IdentityModel",
+          "System.Net.Http",
+          "System.Net.Http.WebRequest",
+          "System.ServiceModel"
+        ],
+        "compile": {
+          "lib/net46/NuGet.Protocol.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Protocol.dll": {}
+        }
+      },
+      "NuGet.Resolver/4.9.4": {
+        "type": "package",
+        "dependencies": {
+          "NuGet.Protocol": "4.9.4"
+        },
+        "compile": {
+          "lib/net46/NuGet.Resolver.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Resolver.dll": {}
+        }
+      },
+      "NuGet.Versioning/4.9.4": {
+        "type": "package",
+        "compile": {
+          "lib/net46/NuGet.Versioning.dll": {}
+        },
+        "runtime": {
+          "lib/net46/NuGet.Versioning.dll": {}
+        }
+      },
+      "RestSharp/106.6.9": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System.Web"
+        ],
+        "compile": {
+          "lib/net452/RestSharp.dll": {}
+        },
+        "runtime": {
+          "lib/net452/RestSharp.dll": {}
+        }
+      },
+      "Rocket.API/5.0.0.663": {
+        "type": "package",
+        "compile": {
+          "lib/net461/Rocket.API.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Rocket.API.dll": {}
+        }
+      },
+      "Rocket.Core/5.0.0.663": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.CSharp": "4.5.0",
+          "Newtonsoft.Json": "12.0.1",
+          "NuGet.Configuration": "4.9.4",
+          "NuGet.Frameworks": "4.9.4",
+          "NuGet.Packaging": "4.9.4",
+          "NuGet.Protocol": "4.9.4",
+          "NuGet.Resolver": "4.9.4",
+          "RestSharp": "106.6.9",
+          "Rocket.API": "5.0.0.663",
+          "SharpFileSystem": "1.0.0.37",
+          "Unity": "5.9.8",
+          "YamlDotNet": "6.0.0",
+          "morelinq": "3.1.0"
+        },
+        "compile": {
+          "lib/net461/Rocket.Core.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Rocket.Core.dll": {}
+        }
+      },
+      "Rocket.UnityEngine/5.0.0.51": {
+        "type": "package",
+        "dependencies": {
+          "Rocket.Core": "5.0.0.662"
+        },
+        "compile": {
+          "lib/net461/Rocket.UnityEngine.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Rocket.UnityEngine.dll": {}
+        }
+      },
+      "Rocket.Unturned/5.0.0.237": {
+        "type": "package",
+        "dependencies": {
+          "Rocket.API": "5.0.0.663",
+          "Rocket.Core": "5.0.0.663",
+          "Rocket.UnityEngine": "5.0.0.51"
+        },
+        "compile": {
+          "lib/net461/Rocket.Unturned.dll": {}
+        },
+        "runtime": {
+          "lib/net461/Rocket.Unturned.dll": {}
+        }
+      },
+      "SharpFileSystem/1.0.0.37": {
+        "type": "package",
+        "compile": {
+          "lib/net45/SharpFileSystem.dll": {}
+        },
+        "runtime": {
+          "lib/net45/SharpFileSystem.dll": {}
+        }
+      },
+      "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll": {}
+        }
+      },
+      "System.ValueTuple/4.4.0": {
+        "type": "package",
+        "frameworkAssemblies": [
+          "System",
+          "mscorlib"
+        ],
+        "compile": {
+          "ref/net461/System.ValueTuple.dll": {}
+        },
+        "runtime": {
+          "lib/net461/System.ValueTuple.dll": {}
+        }
+      },
+      "Unity/5.9.8": {
+        "type": "package",
+        "dependencies": {
+          "System.Runtime.CompilerServices.Unsafe": "4.5.2"
+        },
+        "compile": {
+          "lib/net46/Unity.Abstractions.dll": {},
+          "lib/net46/Unity.Container.dll": {}
+        },
+        "runtime": {
+          "lib/net46/Unity.Abstractions.dll": {},
+          "lib/net46/Unity.Container.dll": {}
+        }
+      },
+      "YamlDotNet/6.0.0": {
+        "type": "package",
+        "compile": {
+          "lib/net45/YamlDotNet.dll": {}
+        },
+        "runtime": {
+          "lib/net45/YamlDotNet.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Lib.Harmony/1.2.0.1": {
+      "sha512": "UwBpaXvFMnZYN6X52QEnU7Domj2QMOGIxYQO4jqNUYAkEKgD3c9dJv+KYVlHKNI2BePFYjnIhmkVCv5+2cOFnA==",
+      "type": "package",
+      "path": "lib.harmony/1.2.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib.harmony.1.2.0.1.nupkg.sha512",
+        "lib.harmony.nuspec",
+        "lib/net35/0Harmony.dll",
+        "lib/net45/0Harmony.dll",
+        "lib/net472/0Harmony.dll"
+      ]
+    },
+    "LiteDB/4.1.4": {
+      "sha512": "g4g9JlHzRBZl+Gd2UbiRdszZ7t8wozU2wX7+5xY5uE79tmcgcDhha+ubAP84G1VLbwQmhBGCzRfIx+epLmJciQ==",
+      "type": "package",
+      "path": "litedb/4.1.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net35/LiteDB.dll",
+        "lib/net35/LiteDB.xml",
+        "lib/net40/LiteDB.dll",
+        "lib/net40/LiteDB.xml",
+        "lib/netstandard1.3/LiteDB.dll",
+        "lib/netstandard1.3/LiteDB.xml",
+        "lib/netstandard2.0/LiteDB.dll",
+        "lib/netstandard2.0/LiteDB.xml",
+        "litedb.4.1.4.nupkg.sha512",
+        "litedb.nuspec"
+      ]
+    },
+    "Microsoft.CSharp/4.5.0": {
+      "sha512": "kaj6Wb4qoMuH3HySFJhxwQfe8R/sJsNJnANrvv8WdFPMoNbKY5htfNscv+LHCu5ipz+49m2e+WQXpLXr9XYemQ==",
+      "type": "package",
+      "path": "microsoft.csharp/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net45/_._",
+        "lib/netcore50/Microsoft.CSharp.dll",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.3/Microsoft.CSharp.dll",
+        "lib/netstandard2.0/Microsoft.CSharp.dll",
+        "lib/portable-net45+win8+wp8+wpa81/_._",
+        "lib/uap10.0.16299/_._",
+        "lib/win8/_._",
+        "lib/wp80/_._",
+        "lib/wpa81/_._",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "microsoft.csharp.4.5.0.nupkg.sha512",
+        "microsoft.csharp.nuspec",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net45/_._",
+        "ref/netcore50/Microsoft.CSharp.dll",
+        "ref/netcore50/Microsoft.CSharp.xml",
+        "ref/netcore50/de/Microsoft.CSharp.xml",
+        "ref/netcore50/es/Microsoft.CSharp.xml",
+        "ref/netcore50/fr/Microsoft.CSharp.xml",
+        "ref/netcore50/it/Microsoft.CSharp.xml",
+        "ref/netcore50/ja/Microsoft.CSharp.xml",
+        "ref/netcore50/ko/Microsoft.CSharp.xml",
+        "ref/netcore50/ru/Microsoft.CSharp.xml",
+        "ref/netcore50/zh-hans/Microsoft.CSharp.xml",
+        "ref/netcore50/zh-hant/Microsoft.CSharp.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard1.0/Microsoft.CSharp.dll",
+        "ref/netstandard1.0/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/de/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/es/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/fr/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/it/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/ja/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/ko/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/ru/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/zh-hans/Microsoft.CSharp.xml",
+        "ref/netstandard1.0/zh-hant/Microsoft.CSharp.xml",
+        "ref/netstandard2.0/Microsoft.CSharp.dll",
+        "ref/netstandard2.0/Microsoft.CSharp.xml",
+        "ref/portable-net45+win8+wp8+wpa81/_._",
+        "ref/uap10.0.16299/_._",
+        "ref/win8/_._",
+        "ref/wp80/_._",
+        "ref/wpa81/_._",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "morelinq/3.1.0": {
+      "sha512": "J0DocueE/VH8+NC7Wh71TrvZjTauJt2rzseon59KlS2HMYGN38REMzq2cj/AnMnXFjsmpVGHo5Sl36FLG6c7vw==",
+      "type": "package",
+      "path": "morelinq/3.1.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net451/MoreLinq.dll",
+        "lib/net451/MoreLinq.pdb",
+        "lib/net451/MoreLinq.xml",
+        "lib/netstandard1.0/MoreLinq.dll",
+        "lib/netstandard1.0/MoreLinq.pdb",
+        "lib/netstandard1.0/MoreLinq.xml",
+        "lib/netstandard2.0/MoreLinq.dll",
+        "lib/netstandard2.0/MoreLinq.pdb",
+        "lib/netstandard2.0/MoreLinq.xml",
+        "morelinq.3.1.0.nupkg.sha512",
+        "morelinq.nuspec"
+      ]
+    },
+    "Newtonsoft.Json/12.0.1": {
+      "sha512": "pBR3wCgYWZGiaZDYP+HHYnalVnPJlpP1q55qvVb+adrDHmFMDc1NAKio61xTwftK3Pw5h7TZJPJEEVMd6ty8rg==",
+      "type": "package",
+      "path": "newtonsoft.json/12.0.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.md",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.pdb",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.pdb",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.pdb",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.pdb",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/netstandard1.0/Newtonsoft.Json.dll",
+        "lib/netstandard1.0/Newtonsoft.Json.pdb",
+        "lib/netstandard1.0/Newtonsoft.Json.xml",
+        "lib/netstandard1.3/Newtonsoft.Json.dll",
+        "lib/netstandard1.3/Newtonsoft.Json.pdb",
+        "lib/netstandard1.3/Newtonsoft.Json.xml",
+        "lib/netstandard2.0/Newtonsoft.Json.dll",
+        "lib/netstandard2.0/Newtonsoft.Json.pdb",
+        "lib/netstandard2.0/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.pdb",
+        "lib/portable-net40+sl5+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.pdb",
+        "lib/portable-net45+win8+wp8+wpa81/Newtonsoft.Json.xml",
+        "newtonsoft.json.12.0.1.nupkg.sha512",
+        "newtonsoft.json.nuspec"
+      ]
+    },
+    "NuGet.Common/4.9.4": {
+      "sha512": "pka80Ws8f1uQgOqUUi2OU/wicglYNmYzrqUAMEtdVFgACwZj36MgHT1TF13EJ7EXUGr3dm5zxlGrZtZwLK2Wuw==",
+      "type": "package",
+      "path": "nuget.common/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Common.dll",
+        "lib/net46/NuGet.Common.xml",
+        "lib/netstandard1.6/NuGet.Common.dll",
+        "lib/netstandard1.6/NuGet.Common.xml",
+        "nuget.common.4.9.4.nupkg.sha512",
+        "nuget.common.nuspec"
+      ]
+    },
+    "NuGet.Configuration/4.9.4": {
+      "sha512": "TLAKAPql7JtVtnMG6yL8o6XiLhh8RlQt4AvHvqu7nQRcT7japuJSzbnC01Vy/LSqeUc/oYZDdLr/fS9U0u8jjQ==",
+      "type": "package",
+      "path": "nuget.configuration/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Configuration.dll",
+        "lib/net46/NuGet.Configuration.xml",
+        "lib/netstandard1.6/NuGet.Configuration.dll",
+        "lib/netstandard1.6/NuGet.Configuration.xml",
+        "nuget.configuration.4.9.4.nupkg.sha512",
+        "nuget.configuration.nuspec"
+      ]
+    },
+    "NuGet.Frameworks/4.9.4": {
+      "sha512": "HTaqmHGBHZIq+N9yr95RRMWhMo3Ypq7lTrsCVG4bAC9f2IV/FUaXF8aBzTclC0n7+DtxWjuwiPGbwdjSx7MWew==",
+      "type": "package",
+      "path": "nuget.frameworks/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/NuGet.Frameworks.dll",
+        "lib/net40/NuGet.Frameworks.xml",
+        "lib/net46/NuGet.Frameworks.dll",
+        "lib/net46/NuGet.Frameworks.xml",
+        "lib/netstandard1.6/NuGet.Frameworks.dll",
+        "lib/netstandard1.6/NuGet.Frameworks.xml",
+        "nuget.frameworks.4.9.4.nupkg.sha512",
+        "nuget.frameworks.nuspec"
+      ]
+    },
+    "NuGet.Packaging/4.9.4": {
+      "sha512": "3qZBs1otWxCifRQDXLr09bMJZyz3jx0n1v0O4Lc9oMEuhPkzXeErZkQdyqKBhyNfazy5MqoNWJCH/mTcc8CmpQ==",
+      "type": "package",
+      "path": "nuget.packaging/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Packaging.dll",
+        "lib/net46/NuGet.Packaging.xml",
+        "lib/netstandard1.6/NuGet.Packaging.dll",
+        "lib/netstandard1.6/NuGet.Packaging.xml",
+        "nuget.packaging.4.9.4.nupkg.sha512",
+        "nuget.packaging.nuspec"
+      ]
+    },
+    "NuGet.Packaging.Core/4.9.4": {
+      "sha512": "aoL4e1itZS6z337kRS/StPtMl1g2GYR4DzQ+amfDZZaBxrr03qjuNsn5Aw3AYJ3KL8/Y1A+JrRiPmHtd/oUxew==",
+      "type": "package",
+      "path": "nuget.packaging.core/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Packaging.Core.dll",
+        "lib/net46/NuGet.Packaging.Core.xml",
+        "lib/netstandard1.6/NuGet.Packaging.Core.dll",
+        "lib/netstandard1.6/NuGet.Packaging.Core.xml",
+        "nuget.packaging.core.4.9.4.nupkg.sha512",
+        "nuget.packaging.core.nuspec"
+      ]
+    },
+    "NuGet.Protocol/4.9.4": {
+      "sha512": "OIowFmB2eMHTnOnH/1GNGzfSDEb+y98TspSdPTR9UC9+EKsgsfqVym/OaxtmrnXDwFq4aO3QcLr5FJn12nCCvg==",
+      "type": "package",
+      "path": "nuget.protocol/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Protocol.dll",
+        "lib/net46/NuGet.Protocol.xml",
+        "lib/netstandard1.6/NuGet.Protocol.dll",
+        "lib/netstandard1.6/NuGet.Protocol.xml",
+        "nuget.protocol.4.9.4.nupkg.sha512",
+        "nuget.protocol.nuspec"
+      ]
+    },
+    "NuGet.Resolver/4.9.4": {
+      "sha512": "U6CumBAASlZXY65jsPVdIZbIEI/jRChMylj4lqpnuoET3j3NAYdqc44pq9vrfMclJZINsBsixb9Zfzg15pFVZA==",
+      "type": "package",
+      "path": "nuget.resolver/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Resolver.dll",
+        "lib/net46/NuGet.Resolver.xml",
+        "lib/netstandard1.6/NuGet.Resolver.dll",
+        "lib/netstandard1.6/NuGet.Resolver.xml",
+        "nuget.resolver.4.9.4.nupkg.sha512",
+        "nuget.resolver.nuspec"
+      ]
+    },
+    "NuGet.Versioning/4.9.4": {
+      "sha512": "sbQ+S0v07PdEHjlFYC+xNza4imazSF0K895kjNHZuyWUkuSgrOr+HotAkheR2bNq/Wq5Yj8GxJljlI1wC69lKg==",
+      "type": "package",
+      "path": "nuget.versioning/4.9.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net46/NuGet.Versioning.dll",
+        "lib/net46/NuGet.Versioning.xml",
+        "lib/netstandard1.6/NuGet.Versioning.dll",
+        "lib/netstandard1.6/NuGet.Versioning.xml",
+        "nuget.versioning.4.9.4.nupkg.sha512",
+        "nuget.versioning.nuspec"
+      ]
+    },
+    "RestSharp/106.6.9": {
+      "sha512": "/IAQTwlnlQcjlIyvelf+rhQcCRPy/r/0MftpNbff/D7PZVnmVXE4AnHk/F4NJJJEZbI4M+QTglB+xFkAyzr+9A==",
+      "type": "package",
+      "path": "restsharp/106.6.9",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net452/RestSharp.dll",
+        "lib/net452/RestSharp.xml",
+        "lib/netstandard2.0/RestSharp.dll",
+        "lib/netstandard2.0/RestSharp.xml",
+        "restsharp.106.6.9.nupkg.sha512",
+        "restsharp.nuspec"
+      ]
+    },
+    "Rocket.API/5.0.0.663": {
+      "sha512": "Gk3ioMNYnJB6WCGbjAXDw7wywwcwLiG4+2FDzEycbeliVOJUgiBFad/tFKRsq8/KyqQqgfeJBTsEckOwpwMmug==",
+      "type": "package",
+      "path": "rocket.api/5.0.0.663",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Rocket.API.dll",
+        "lib/net461/Rocket.API.xml",
+        "lib/netstandard2.0/Rocket.API.dll",
+        "lib/netstandard2.0/Rocket.API.xml",
+        "rocket.api.5.0.0.663.nupkg.sha512",
+        "rocket.api.nuspec"
+      ]
+    },
+    "Rocket.Core/5.0.0.663": {
+      "sha512": "3/YR5D6+9XfG6o9WEUufWvUFnmeFytTNpAmL/kD+4hAA+ByDMVf6uiFfjuqrKcd8/MUx8Q2Iojzpc4JY2TNW4A==",
+      "type": "package",
+      "path": "rocket.core/5.0.0.663",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Rocket.Core.dll",
+        "lib/net461/Rocket.Core.xml",
+        "lib/netstandard2.0/Rocket.Core.dll",
+        "lib/netstandard2.0/Rocket.Core.xml",
+        "rocket.core.5.0.0.663.nupkg.sha512",
+        "rocket.core.nuspec"
+      ]
+    },
+    "Rocket.UnityEngine/5.0.0.51": {
+      "sha512": "Mez7UO58dW5wxfbp5l9hrg24VgkkMgb7CvTpHq32KmVY2cT3UnEQIxa92A+u8TIGFcXRlpVe2sLhGiBkNUolZQ==",
+      "type": "package",
+      "path": "rocket.unityengine/5.0.0.51",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Rocket.UnityEngine.dll",
+        "rocket.unityengine.5.0.0.51.nupkg.sha512",
+        "rocket.unityengine.nuspec"
+      ]
+    },
+    "Rocket.Unturned/5.0.0.237": {
+      "sha512": "1xcZhB8w54wFFkgXSXd6SWLjUsLB8uBmOa/8hsA09aZJsIQpCVXM2tlWWsxbvsbGRex6rXSSynDElzLa5RRVbQ==",
+      "type": "package",
+      "path": "rocket.unturned/5.0.0.237",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net461/Rocket.Unturned.dll",
+        "lib/net461/Rocket.Unturned.xml",
+        "rocket.unturned.5.0.0.237.nupkg.sha512",
+        "rocket.unturned.nuspec"
+      ]
+    },
+    "SharpFileSystem/1.0.0.37": {
+      "sha512": "QeT7TUcXZ5lyQ0sLhHCyUpHOWp/NJJmVFgQjo0JjxEvE5tYYKXLBllu+DTwrCZv/apbDy8YqnDgbtcYJoSjAhQ==",
+      "type": "package",
+      "path": "sharpfilesystem/1.0.0.37",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net45/SharpFileSystem.dll",
+        "sharpfilesystem.1.0.0.37.nupkg.sha512",
+        "sharpfilesystem.nuspec"
+      ]
+    },
+    "System.Runtime.CompilerServices.Unsafe/4.5.2": {
+      "sha512": "wprSFgext8cwqymChhrBLu62LMg/1u92bU+VOwyfBimSPVFXtsNqEWC92Pf9ofzJFlk4IHmJA75EDJn1b2goAQ==",
+      "type": "package",
+      "path": "system.runtime.compilerservices.unsafe/4.5.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netcoreapp2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "lib/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard1.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.dll",
+        "ref/netstandard2.0/System.Runtime.CompilerServices.Unsafe.xml",
+        "system.runtime.compilerservices.unsafe.4.5.2.nupkg.sha512",
+        "system.runtime.compilerservices.unsafe.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "System.ValueTuple/4.4.0": {
+      "sha512": "BahUww/+mdP4ARCAh2RQhQTg13wYLVrBb9SYVgW8ZlrwjraGCXHGjo0oIiUfZ34LUZkMMR+RAzR7dEY4S1HeQQ==",
+      "type": "package",
+      "path": "system.valuetuple/4.4.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/MonoAndroid10/_._",
+        "lib/MonoTouch10/_._",
+        "lib/net461/System.ValueTuple.dll",
+        "lib/net461/System.ValueTuple.xml",
+        "lib/net47/System.ValueTuple.dll",
+        "lib/net47/System.ValueTuple.xml",
+        "lib/netcoreapp2.0/_._",
+        "lib/netstandard1.0/System.ValueTuple.dll",
+        "lib/netstandard1.0/System.ValueTuple.xml",
+        "lib/netstandard2.0/_._",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "lib/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "lib/xamarinios10/_._",
+        "lib/xamarinmac20/_._",
+        "lib/xamarintvos10/_._",
+        "lib/xamarinwatchos10/_._",
+        "ref/MonoAndroid10/_._",
+        "ref/MonoTouch10/_._",
+        "ref/net461/System.ValueTuple.dll",
+        "ref/net461/System.ValueTuple.xml",
+        "ref/net47/System.ValueTuple.dll",
+        "ref/net47/System.ValueTuple.xml",
+        "ref/netcoreapp2.0/_._",
+        "ref/netstandard2.0/_._",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.dll",
+        "ref/portable-net40+sl4+win8+wp8/System.ValueTuple.xml",
+        "ref/xamarinios10/_._",
+        "ref/xamarinmac20/_._",
+        "ref/xamarintvos10/_._",
+        "ref/xamarinwatchos10/_._",
+        "system.valuetuple.4.4.0.nupkg.sha512",
+        "system.valuetuple.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    },
+    "Unity/5.9.8": {
+      "sha512": "5TtBgl2ma8rAh8cWbdp5NlRekBnucpxh4kR1baTnagKsCEZdpguztcsaZw3+XIBkqhql9QY928o0d4T6rz9VlQ==",
+      "type": "package",
+      "path": "unity/5.9.8",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net40/Unity.Abstractions.dll",
+        "lib/net40/Unity.Abstractions.pdb",
+        "lib/net40/Unity.Container.dll",
+        "lib/net40/Unity.Container.pdb",
+        "lib/net45/Unity.Abstractions.dll",
+        "lib/net45/Unity.Abstractions.pdb",
+        "lib/net45/Unity.Container.dll",
+        "lib/net45/Unity.Container.pdb",
+        "lib/net46/Unity.Abstractions.dll",
+        "lib/net46/Unity.Abstractions.pdb",
+        "lib/net46/Unity.Container.dll",
+        "lib/net46/Unity.Container.pdb",
+        "lib/net47/Unity.Abstractions.dll",
+        "lib/net47/Unity.Abstractions.pdb",
+        "lib/net47/Unity.Container.dll",
+        "lib/net47/Unity.Container.pdb",
+        "lib/netcoreapp1.0/Unity.Abstractions.dll",
+        "lib/netcoreapp1.0/Unity.Abstractions.pdb",
+        "lib/netcoreapp1.0/Unity.Container.dll",
+        "lib/netcoreapp1.0/Unity.Container.pdb",
+        "lib/netcoreapp2.0/Unity.Abstractions.dll",
+        "lib/netcoreapp2.0/Unity.Abstractions.pdb",
+        "lib/netcoreapp2.0/Unity.Container.dll",
+        "lib/netcoreapp2.0/Unity.Container.pdb",
+        "lib/netstandard1.0/Unity.Abstractions.dll",
+        "lib/netstandard1.0/Unity.Abstractions.pdb",
+        "lib/netstandard1.0/Unity.Container.dll",
+        "lib/netstandard1.0/Unity.Container.pdb",
+        "lib/netstandard2.0/Unity.Abstractions.dll",
+        "lib/netstandard2.0/Unity.Abstractions.pdb",
+        "lib/netstandard2.0/Unity.Container.dll",
+        "lib/netstandard2.0/Unity.Container.pdb",
+        "unity.5.9.8.nupkg.sha512",
+        "unity.nuspec"
+      ]
+    },
+    "YamlDotNet/6.0.0": {
+      "sha512": "Y198v1lh0rda2G8nGZMMClvrS88JQkdqRfZEDY/OrlGjmJujSXoh6eHG23vPC3N7xdQQtl9aFb3ekj/ijWETww==",
+      "type": "package",
+      "path": "yamldotnet/6.0.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/YamlDotNet.dll",
+        "lib/net20/YamlDotNet.xml",
+        "lib/net35-client/YamlDotNet.dll",
+        "lib/net35-client/YamlDotNet.xml",
+        "lib/net35/YamlDotNet.dll",
+        "lib/net35/YamlDotNet.xml",
+        "lib/net45/YamlDotNet.dll",
+        "lib/net45/YamlDotNet.xml",
+        "lib/netstandard1.3/YamlDotNet.dll",
+        "lib/netstandard1.3/YamlDotNet.xml",
+        "yamldotnet.6.0.0.nupkg.sha512",
+        "yamldotnet.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.6.1": [
+      "Lib.Harmony >= 1.2.0.1",
+      "LiteDB >= 4.1.4",
+      "Rocket.Core >= 5.0.0.663",
+      "Rocket.Unturned >= 5.0.0.237"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\mcrow\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
+      "projectName": "Teleportation",
+      "projectPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
+      "packagesPath": "C:\\Users\\mcrow\\.nuget\\packages\\",
+      "outputPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\mcrow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "net461"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net461": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "net461": {
+        "dependencies": {
+          "Lib.Harmony": {
+            "target": "Package",
+            "version": "[1.2.0.1, )"
+          },
+          "LiteDB": {
+            "target": "Package",
+            "version": "[4.1.4, )"
+          },
+          "Rocket.Core": {
+            "target": "Package",
+            "version": "[5.0.0.663, )"
+          },
+          "Rocket.Unturned": {
+            "target": "Package",
+            "version": "[5.0.0.237, )"
+          }
+        }
+      }
+    }
+  }
+}

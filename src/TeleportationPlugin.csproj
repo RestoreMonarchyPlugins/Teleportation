@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <PackageId>Teleportation</PackageId>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageTags>Teleportation RocketMod MCrow RestoreMonarchy</PackageTags>
+    <PackageLicenseUrl>https://github.com/RestoreMonarchy/Plugins/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://restoremonarchy.com</PackageProjectUrl>
+    <PackageAuthors>Michael Crow (MCrow)</PackageAuthors>
+    <PackageOwners>Michael Crow</PackageOwners>
+    <Authors>Michael Crow (MCrow)</Authors>
+    <Company>Restore Monarchy</Company>
+    <Copyright>2019 © Restore Monarchy</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>Restore Monarchy Plugin</Description>
+    <Version>1.0.0.0</Version>
+    <RepositoryUrl>https://github.com/RestoreMonarchy/Teleportation</RepositoryUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Lib.Harmony" Version="1.2.0.1" />
+    <PackageReference Include="LiteDB" Version="4.1.4" />
+    <PackageReference Include="Rocket.Core" Version="5.0.0.663" />
+    <PackageReference Include="Rocket.Unturned" Version="5.0.0.237" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>..\..\..\..\Steam\steamapps\common\Unturned\Unturned_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>..\..\..\..\Steam\steamapps\common\Unturned\Unturned_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>..\..\..\..\Steam\steamapps\common\Unturned\Unturned_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>..\..\..\..\Steam\steamapps\common\Unturned\Unturned_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

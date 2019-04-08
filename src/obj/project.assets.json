@@ -312,7 +312,7 @@
   },
   "libraries": {
     "Lib.Harmony/1.2.0.1": {
-      "sha512": "UwBpaXvFMnZYN6X52QEnU7Domj2QMOGIxYQO4jqNUYAkEKgD3c9dJv+KYVlHKNI2BePFYjnIhmkVCv5+2cOFnA==",
+      "sha512": "Gp98U0KupUI7dwonjcJF2Xn/2qE4HH8q4FGS03C/44MdP2nywaG5s0wOUPWU+5hreYC1jxNmrdm0alCSESJ9bg==",
       "type": "package",
       "path": "lib.harmony/1.2.0.1",
       "files": [
@@ -413,7 +413,7 @@
       ]
     },
     "morelinq/3.1.0": {
-      "sha512": "J0DocueE/VH8+NC7Wh71TrvZjTauJt2rzseon59KlS2HMYGN38REMzq2cj/AnMnXFjsmpVGHo5Sl36FLG6c7vw==",
+      "sha512": "E7lL0cA0oder3gK6/UE8km3HVt8Q5dkq4OTPgFXIBogN9rhNqDeY1GhRyrHM2Ertf9Kf4Od92xbQ568lLCkjFg==",
       "type": "package",
       "path": "morelinq/3.1.0",
       "files": [
@@ -472,7 +472,7 @@
       ]
     },
     "NuGet.Common/4.9.4": {
-      "sha512": "pka80Ws8f1uQgOqUUi2OU/wicglYNmYzrqUAMEtdVFgACwZj36MgHT1TF13EJ7EXUGr3dm5zxlGrZtZwLK2Wuw==",
+      "sha512": "PpQ9Ykk/aVkeMGjCIQ7SLlEE/MEzj46G9cNJZrKj61ahIioc878a67G/cdbjlAPoYPBx6FBv9oeWxOdwBMz+IQ==",
       "type": "package",
       "path": "nuget.common/4.9.4",
       "files": [
@@ -487,7 +487,7 @@
       ]
     },
     "NuGet.Configuration/4.9.4": {
-      "sha512": "TLAKAPql7JtVtnMG6yL8o6XiLhh8RlQt4AvHvqu7nQRcT7japuJSzbnC01Vy/LSqeUc/oYZDdLr/fS9U0u8jjQ==",
+      "sha512": "yzWQpzCTiyUlH8hWfIhXnpZEeoiwn7gMG5A7gVdcEBbxWqfQdTMHZAmaeYgGlptPWXSCcu2KNgl8lzGQzxVq8A==",
       "type": "package",
       "path": "nuget.configuration/4.9.4",
       "files": [
@@ -502,7 +502,7 @@
       ]
     },
     "NuGet.Frameworks/4.9.4": {
-      "sha512": "HTaqmHGBHZIq+N9yr95RRMWhMo3Ypq7lTrsCVG4bAC9f2IV/FUaXF8aBzTclC0n7+DtxWjuwiPGbwdjSx7MWew==",
+      "sha512": "ZOW4jlWYDNKURAX8IL0jWbPt8Db6T+HyqTGzkz8NLrbkFqQHHoLZ8kmrP4250/46Td0AVILczCJZC9+pMNKEkA==",
       "type": "package",
       "path": "nuget.frameworks/4.9.4",
       "files": [
@@ -519,7 +519,7 @@
       ]
     },
     "NuGet.Packaging/4.9.4": {
-      "sha512": "3qZBs1otWxCifRQDXLr09bMJZyz3jx0n1v0O4Lc9oMEuhPkzXeErZkQdyqKBhyNfazy5MqoNWJCH/mTcc8CmpQ==",
+      "sha512": "eLuF2vaFnx7kix6sjOXenqmkmKqit+ySmbrp5ElhZFbKSAGjdc5HQbceYsfY5DZhk2D7N3uvpffae+xhTrqQjg==",
       "type": "package",
       "path": "nuget.packaging/4.9.4",
       "files": [
@@ -534,7 +534,7 @@
       ]
     },
     "NuGet.Packaging.Core/4.9.4": {
-      "sha512": "aoL4e1itZS6z337kRS/StPtMl1g2GYR4DzQ+amfDZZaBxrr03qjuNsn5Aw3AYJ3KL8/Y1A+JrRiPmHtd/oUxew==",
+      "sha512": "3gf0smMMU4DbBlA8vxtRx1IDx7ktAQJ57O7eMeL10qXw+C84kHCw8EGdPV+luX5vceCQMbqNPj3qFaLUe2cB5g==",
       "type": "package",
       "path": "nuget.packaging.core/4.9.4",
       "files": [
@@ -549,7 +549,7 @@
       ]
     },
     "NuGet.Protocol/4.9.4": {
-      "sha512": "OIowFmB2eMHTnOnH/1GNGzfSDEb+y98TspSdPTR9UC9+EKsgsfqVym/OaxtmrnXDwFq4aO3QcLr5FJn12nCCvg==",
+      "sha512": "amvlMPzDE19n313khQKzc2APeF8P2osw7efyPrvuu+xy9PoH2xwFpR8pT8Q07sCOgwfAqlWtD//D8sNIsjP9lw==",
       "type": "package",
       "path": "nuget.protocol/4.9.4",
       "files": [
@@ -564,7 +564,7 @@
       ]
     },
     "NuGet.Resolver/4.9.4": {
-      "sha512": "U6CumBAASlZXY65jsPVdIZbIEI/jRChMylj4lqpnuoET3j3NAYdqc44pq9vrfMclJZINsBsixb9Zfzg15pFVZA==",
+      "sha512": "T86GwyMsNg0itoUPL+7JFDtX/O2Cd6L8k1I/pxVWwoB2w1+zyZ832TkYHPdV3w0q7sLIIcjQoPZgsRcq1A2ozA==",
       "type": "package",
       "path": "nuget.resolver/4.9.4",
       "files": [
@@ -579,7 +579,7 @@
       ]
     },
     "NuGet.Versioning/4.9.4": {
-      "sha512": "sbQ+S0v07PdEHjlFYC+xNza4imazSF0K895kjNHZuyWUkuSgrOr+HotAkheR2bNq/Wq5Yj8GxJljlI1wC69lKg==",
+      "sha512": "j4dIaI9ULojhlIiEea7JpQsc5bH6XgKqnaU5iPS8J9s1EIrxmOV6bMJ51iGtfzRAWLiZv/cjpPtzBFpqwD/nIQ==",
       "type": "package",
       "path": "nuget.versioning/4.9.4",
       "files": [
@@ -594,7 +594,7 @@
       ]
     },
     "RestSharp/106.6.9": {
-      "sha512": "/IAQTwlnlQcjlIyvelf+rhQcCRPy/r/0MftpNbff/D7PZVnmVXE4AnHk/F4NJJJEZbI4M+QTglB+xFkAyzr+9A==",
+      "sha512": "8RNSrGB8OJqkVnUno0amSL1dsTXGkqVjRvpgwhDR1cy4xhwc/6PWAJFiz6B5cnwmCB9aYMGaHrgKfTt6iMziqw==",
       "type": "package",
       "path": "restsharp/106.6.9",
       "files": [
@@ -609,7 +609,7 @@
       ]
     },
     "Rocket.API/5.0.0.663": {
-      "sha512": "Gk3ioMNYnJB6WCGbjAXDw7wywwcwLiG4+2FDzEycbeliVOJUgiBFad/tFKRsq8/KyqQqgfeJBTsEckOwpwMmug==",
+      "sha512": "+62DQoVwmWHWzDL/5Pcp6VOn1SEuy7lvqkG5Iv8EV3IQdaMumQtb1ZQdKJTDuD/jbjsKcpwbHQ6e397jnxSv3A==",
       "type": "package",
       "path": "rocket.api/5.0.0.663",
       "files": [
@@ -624,7 +624,7 @@
       ]
     },
     "Rocket.Core/5.0.0.663": {
-      "sha512": "3/YR5D6+9XfG6o9WEUufWvUFnmeFytTNpAmL/kD+4hAA+ByDMVf6uiFfjuqrKcd8/MUx8Q2Iojzpc4JY2TNW4A==",
+      "sha512": "MRCFLZhR1bmp1DQc3ICHNb6KW+coeetcyiS/FMjD3K0ZTOnj/4Wo+gd8WPqBHI3qi5oQuPXQpsRPvY1baYn3WQ==",
       "type": "package",
       "path": "rocket.core/5.0.0.663",
       "files": [
@@ -639,7 +639,7 @@
       ]
     },
     "Rocket.UnityEngine/5.0.0.51": {
-      "sha512": "Mez7UO58dW5wxfbp5l9hrg24VgkkMgb7CvTpHq32KmVY2cT3UnEQIxa92A+u8TIGFcXRlpVe2sLhGiBkNUolZQ==",
+      "sha512": "B1hyEbnp2mlvGmq+/D3MtNr7N2KVTThQv2TeIS2ZolZJtcUKNCUZ9i5HXJV48rzhR/mWL9yOaNrKFriivcbmqg==",
       "type": "package",
       "path": "rocket.unityengine/5.0.0.51",
       "files": [
@@ -664,7 +664,7 @@
       ]
     },
     "SharpFileSystem/1.0.0.37": {
-      "sha512": "QeT7TUcXZ5lyQ0sLhHCyUpHOWp/NJJmVFgQjo0JjxEvE5tYYKXLBllu+DTwrCZv/apbDy8YqnDgbtcYJoSjAhQ==",
+      "sha512": "GL3KEDERrNRlUEkP7gTxYRjqnB4aK5r/KmfhGKtt09yoiB6T/oMmdYA/aDiK+7RfGYoRgKTQbRtcnDBUTW1yTQ==",
       "type": "package",
       "path": "sharpfilesystem/1.0.0.37",
       "files": [
@@ -746,7 +746,7 @@
       ]
     },
     "Unity/5.9.8": {
-      "sha512": "5TtBgl2ma8rAh8cWbdp5NlRekBnucpxh4kR1baTnagKsCEZdpguztcsaZw3+XIBkqhql9QY928o0d4T6rz9VlQ==",
+      "sha512": "0EtHdkCCqMHH6/lOkyADGEiqxrg2094RK3TTdas7pPtDVLWnuUnNRTPiz1oSjIbw4B9ANljKDIWtVbkEJXdRaw==",
       "type": "package",
       "path": "unity/5.9.8",
       "files": [
@@ -789,7 +789,7 @@
       ]
     },
     "YamlDotNet/6.0.0": {
-      "sha512": "Y198v1lh0rda2G8nGZMMClvrS88JQkdqRfZEDY/OrlGjmJujSXoh6eHG23vPC3N7xdQQtl9aFb3ekj/ijWETww==",
+      "sha512": "T80Y7t6ytIXd+m0hgZjvYPqu2Xhk4stXypYFl2i6HHNfGJTqY6W5re3cY7Wlige8LJzYetYlU8yIsDkCfszETA==",
       "type": "package",
       "path": "yamldotnet/6.0.0",
       "files": [
@@ -819,23 +819,23 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\mcrow\\.nuget\\packages\\": {},
+    "C:\\Users\\troja\\.nuget\\packages\\": {},
     "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
+      "projectUniqueName": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj",
       "projectName": "Teleportation",
-      "projectPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
-      "packagesPath": "C:\\Users\\mcrow\\.nuget\\packages\\",
-      "outputPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\obj\\",
+      "projectPath": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj",
+      "packagesPath": "C:\\Users\\troja\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "C:\\Users\\mcrow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\troja\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -843,7 +843,8 @@
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "https://api.nuget.org/v3/index.json": {}
+        "https://api.nuget.org/v3/index.json": {},
+        "https://nuget.imperialplugins.com/v3/index.json": {}
       },
       "frameworks": {
         "net461": {

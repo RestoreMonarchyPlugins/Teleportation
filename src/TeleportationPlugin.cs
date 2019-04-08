@@ -1,40 +1,44 @@
-﻿using Rocket.API.DependencyInjection;
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System.Threading.Tasks;
+using Harmony;
+using RestoreMonarchy.TeleportationPlugin.Commands;
+using Rocket.API.DependencyInjection;
 using Rocket.API.Eventing;
 using Rocket.API.Logging;
 using Rocket.API.Permissions;
 using Rocket.API.Scheduling;
 using Rocket.API.User;
 using Rocket.Core.Eventing;
+using Rocket.Core.Logging;
 using Rocket.Core.Player.Events;
 using Rocket.Core.Plugins;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using TeleportationPlugin.Commands;
-using Harmony;
-using System.Reflection;
-using TeleportationPlugin.Models;
 
-namespace TeleportationPlugin
+namespace RestoreMonarchy.TeleportationPlugin
 {
     public class TeleportationPlugin : Plugin<TeleportationConfiguration>
     {
-        private readonly IUserManager userManager;
+        public const string HarmonyInstanceId = "com.restoremonarchy.teleportationplugin";
+
         private readonly IPermissionProvider permissionProvider;
         private readonly ILogger logger;
         private readonly ITaskScheduler taskScheduler;
-        internal static TeleportationPlugin Instance;
-        public List<PlayerRequests> requests = new List<PlayerRequests>();
-        public Database Database { get; set; }
+        private HarmonyInstance harmonyInstance;
+
+        // Only to be used by harmony patches
+        internal static TeleportationPlugin Instance { get; set; }
+
+        public List<PlayerTeleportRequest> PendingRequests { get; } = new List<PlayerTeleportRequest>();
+        public TeleportationDatabase Database { get; set; }
 
         public TeleportationPlugin(IDependencyContainer container, IUserManager userManager, IPermissionProvider permissionProvider, ILogger logger, ITaskScheduler taskScheduler) : base(container)
         {
-            this.userManager = userManager;
             this.permissionProvider = permissionProvider;
             this.logger = logger;
             this.taskScheduler = taskScheduler;
-            Instance = this;
-            this.Database = new Database(userManager, permissionProvider, Instance);
 
+            Instance = this;
+            Database = new TeleportationDatabase(userManager, permissionProvider, this);
         }
 
         public override Dictionary<string, string> DefaultTranslations => new Dictionary<string, string>
@@ -69,53 +73,58 @@ namespace TeleportationPlugin
 
         protected override async Task OnActivate(bool isFromReload)
         {
-            EventBus.AddEventListener(this, new EventListener(ConfigurationInstance, requests));
+            EventBus.AddEventListener(this, new TeleportationEventListener(PendingRequests));
 
-            TPCommand tpaCommand = new TPCommand(userManager, Translations, permissionProvider, logger, taskScheduler ,Instance, requests);
-            HomeCommand homeCommand = new HomeCommand(userManager, Translations, permissionProvider, logger, taskScheduler, Database, Instance);
+            TeleportCommands tpaCommand = new TeleportCommands(Translations, permissionProvider, taskScheduler ,this, PendingRequests);
+            HomeCommands homeCommand = new HomeCommands( Translations, taskScheduler, Database, this);
 
-            if (Instance.ConfigurationInstance.TPEnabled)
+            if (ConfigurationInstance.TPEnabled)
                 RegisterCommands(tpaCommand);
-            if (Instance.ConfigurationInstance.HomeEnabled)
+
+            if (ConfigurationInstance.HomeEnabled)
                 RegisterCommands(homeCommand);
 
-            HarmonyInstance harmony = HarmonyInstance.Create("pw.cirno.extraconcentratedjuice");
-            harmony.PatchAll(Assembly.GetExecutingAssembly());
+            harmonyInstance = HarmonyInstance.Create(HarmonyInstanceId);
+            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
 
-            logger.Log($"{Assembly.GetExecutingAssembly().GetName().Name} has been loaded!", LogLevel.Information);
-            logger.Log($"Version: {Assembly.GetExecutingAssembly().GetName().Version}", LogLevel.Information);
-            logger.Log($"Made by MCrow", LogLevel.Information);
+            logger.LogInformation($"{Assembly.GetExecutingAssembly().GetName().Name} has been loaded!", LogLevel.Information);
+            logger.LogInformation($"Version: {Assembly.GetExecutingAssembly().GetName().Version}", LogLevel.Information);
+            logger.LogInformation($"Made by MCrow", LogLevel.Information);
 
             string isEnabled = "disabled";
 
-            if (Instance.ConfigurationInstance.TPEnabled)
+            if (ConfigurationInstance.TPEnabled)
                 isEnabled = "enabled";
 
-            logger.Log($"TP: {isEnabled}", LogLevel.Information);
+            logger.LogInformation($"TP: {isEnabled}", LogLevel.Information);
 
-            if (!Instance.ConfigurationInstance.HomeEnabled)
+            if (!ConfigurationInstance.HomeEnabled)
                 isEnabled = "disabled";
 
-            logger.Log($"Home: {isEnabled}", LogLevel.Information);
+            logger.LogInformation($"Home: {isEnabled}", LogLevel.Information);
+        }
+
+        protected override async Task OnDeactivate()
+        {
+            harmonyInstance?.UnpatchAll(HarmonyInstanceId);
+            harmonyInstance = null;
         }
     }
 
-    public class EventListener : IEventListener<PlayerDisconnectedEvent>
+    public class TeleportationEventListener : IEventListener<PlayerDisconnectedEvent>
     {
-        private readonly TeleportationConfiguration config;
-        private readonly List<PlayerRequests> requests;
+        private readonly List<PlayerTeleportRequest> teleportationRequests;
 
-        public EventListener(TeleportationConfiguration config, List<PlayerRequests> requests)
+        public TeleportationEventListener(List<PlayerTeleportRequest> teleportationRequests)
         {
-            this.config = config;
-            this.requests = requests;
+            this.teleportationRequests = teleportationRequests;
         }
 
         [EventHandler]
         public async Task HandleEventAsync(IEventEmitter emitter, PlayerDisconnectedEvent @event)
         {
-            requests.RemoveAll(x=> x.Receiver == @event.Player.User);
-            requests.RemoveAll(x => x.Sender == @event.Player.User);
+            teleportationRequests.RemoveAll(x=> x.Receiver.Id == @event.Player.User.Id);
+            teleportationRequests.RemoveAll(x => x.Sender.Id == @event.Player.User.Id);
         }
     }
 }

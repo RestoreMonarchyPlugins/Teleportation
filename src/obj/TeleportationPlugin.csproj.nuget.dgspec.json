@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj": {}
+    "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj": {}
   },
   "projects": {
-    "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj": {
+    "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
+        "projectUniqueName": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj",
         "projectName": "Teleportation",
-        "projectPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\TeleportationPlugin.csproj",
-        "packagesPath": "C:\\Users\\mcrow\\.nuget\\packages\\",
-        "outputPath": "D:\\MCrow\\RestoreMonarchy\\Plugins\\TeleportationPlugin\\obj\\",
+        "projectPath": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\TeleportationPlugin.csproj",
+        "packagesPath": "C:\\Users\\troja\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\troja\\source\\repos\\Teleportation\\src\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\mcrow\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\troja\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -25,7 +25,8 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-          "https://api.nuget.org/v3/index.json": {}
+          "https://api.nuget.org/v3/index.json": {},
+          "https://nuget.imperialplugins.com/v3/index.json": {}
         },
         "frameworks": {
           "net461": {

@@ -1,43 +1,36 @@
-﻿using Rocket.API.Commands;
-using Rocket.API.I18N;
-using Rocket.API.Permissions;
-using Rocket.API.Player;
-using Rocket.API.User;
-using Rocket.Core.Commands;
-using Rocket.Core.User;
-using Rocket.Unturned.Player;
-using SDG.Unturned;
+﻿using System;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TeleportationPlugin.Models;
-using System.Drawing;
-using System;
+using RestoreMonarchy.TeleportationPlugin.Helpers;
+using Rocket.API.Commands;
+using Rocket.API.I18N;
+using Rocket.API.Player;
 using Rocket.API.Scheduling;
+using Rocket.API.User;
+using Rocket.Core.Commands;
 using Rocket.Core.Scheduling;
+using Rocket.Core.User;
 using Rocket.UnityEngine.Extensions;
+using Rocket.Unturned.Player;
+using SDG.Unturned;
 
-namespace TeleportationPlugin.Commands
+namespace RestoreMonarchy.TeleportationPlugin.Commands
 {
-    public class HomeCommand
+    public class HomeCommands
     {
-        private readonly IUserManager userManager;
         private readonly ITranslationCollection translations;
-        private readonly IPermissionProvider permissionProvider;
-        private readonly Rocket.API.Logging.ILogger logger;
         private readonly ITaskScheduler taskScheduler;
         private readonly TeleportationPlugin Instance;
-        private readonly Database Database;
+        private readonly TeleportationDatabase teleportationDatabase;
 
-        public HomeCommand(IUserManager userManager, ITranslationCollection translations, IPermissionProvider permissionProvider, Rocket.API.Logging.ILogger logger, ITaskScheduler taskScheduler, Database Database, TeleportationPlugin instance)
+        public HomeCommands(ITranslationCollection translations, ITaskScheduler taskScheduler, TeleportationDatabase teleportationDatabase, TeleportationPlugin instance)
         {
-            this.userManager = userManager;
             this.translations = translations;
-            this.permissionProvider = permissionProvider;
-            this.logger = logger;
             this.taskScheduler = taskScheduler;
-            this.Database = Database;
-            this.Instance = instance;
+            this.teleportationDatabase = teleportationDatabase;
+            Instance = instance;
         }
 
         [Command(Summary = "Teleports to your bed", Name = "home")]
@@ -52,7 +45,7 @@ namespace TeleportationPlugin.Commands
             if (context.Parameters.Length > 0)
             {
                 bedName = await context.Parameters.GetAsync<string>(0);
-                string uBed = Database.GetBed(sender.Id, bedName);
+                string uBed = teleportationDatabase.GetBed(sender.Id, bedName);
                 if (uBed == null)
                 {
                     await sender.SendMessageAsync(await translations.GetAsync("Home_NotFound", bedName), Color.Orange);
@@ -60,12 +53,12 @@ namespace TeleportationPlugin.Commands
                 }
                 else
                 {
-                    position = UTools.StringToVector3(uBed);
+                    position = VectorHelper.StringToVector3(uBed);
                 }
             }
             else
             {
-                if (!BarricadeManager.tryGetBed(uSender.CSteamID, out position, out byte angle))
+                if (!BarricadeManager.tryGetBed(uSender.CSteamID, out position, out _))
                 {
                     await sender.SendMessageAsync(await translations.GetAsync("Home_NotHave"), Color.Orange);
                     return;
@@ -89,8 +82,8 @@ namespace TeleportationPlugin.Commands
         [CommandUser(typeof(IPlayerUser))]
         public async Task Homes(IUser sender)
         {
-            var beds = Database.GetAllBeds(sender.Id);
-            if (beds.Count() == 0)
+            var beds = teleportationDatabase.GetAllBeds(sender.Id).ToList();
+            if (!beds.Any())
             {
                 await sender.SendMessageAsync(await translations.GetAsync("Home_NotHave"), Color.Orange);
                 return;
@@ -111,12 +104,10 @@ namespace TeleportationPlugin.Commands
         public async Task RenameHome(IUser sender, string oldName, string newName)
         {
             UnturnedUser uSender = (UnturnedUser)sender;
-            if (Database.RenameBed(uSender, oldName, newName, await translations.GetAsync("Home_NotFound", oldName), await translations.GetAsync("Home_Exist", newName)))
+            if (teleportationDatabase.RenameBed(uSender, oldName, newName, await translations.GetAsync("Home_NotFound", oldName), await translations.GetAsync("Home_Exist", newName)))
             {
                 await sender.SendMessageAsync(await translations.GetAsync("Home_Rename", oldName, newName), Color.Orange);
             }
-            
         }
-
     }
 }

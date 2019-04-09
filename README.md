@@ -19,7 +19,7 @@ then type in your server console `rocket install Teleportation`
 * /home (name) - Teleports you to bed
 * /homes - Displays a list of your beds
 * /renamehome <oldName> <newName> - Renames your bed with old name to new name <br />
-<> means required parameter & () means optional parameter
+<> means required parameter & () means optional parameter  
 Aliases: /tpr, /tpa, /tpl, /tpc, /bed, /beds, /renamebed
 
 ## Configuration

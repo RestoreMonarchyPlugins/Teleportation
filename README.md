@@ -5,8 +5,11 @@
 * Manage maximum amount of teleportation requests & homes claimed per permissions group
 
 ## Instalation
-* Download the NUPKG file from here
-* Download the .dll file from here 
+You can download the latest release from [here](https://github.com/RestoreMonarchy/Teleportation/releases) or add this line to your server NuGet.Config inside `packageSources` tag  
+```xml
+<add key="restore-monarchy" value="http://plugins.restoremonarchy.com/nuget" protocolVersion="2" />
+```
+then type in your server console `rocket install Teleportation`
 
 ## Commands
 * /tprequest <player> - Sends a request to the player

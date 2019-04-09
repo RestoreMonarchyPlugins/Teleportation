@@ -1,41 +1,39 @@
-﻿using LiteDB;
+﻿using System.Collections.Generic;
+using System.Linq;
+using LiteDB;
+using RestoreMonarchy.TeleportationPlugin.Helpers;
 using Rocket.API.Permissions;
 using Rocket.API.User;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using TeleportationPlugin.uDB;
 
-namespace TeleportationPlugin
+namespace RestoreMonarchy.TeleportationPlugin
 {
-    public class Database
+    public class TeleportationDatabase
     {
         private readonly IUserManager userManager;
         private readonly IPermissionProvider permissionProvider;
-        private readonly TeleportationPlugin Instance;
+        private readonly TeleportationPlugin pluginInstance;
 
-        public Database(IUserManager userManager, IPermissionProvider permissionProvider, TeleportationPlugin Instance)
+        public TeleportationDatabase(IUserManager userManager, IPermissionProvider permissionProvider, TeleportationPlugin pluginInstance)
         {
             this.userManager = userManager;
             this.permissionProvider = permissionProvider;
-            this.Instance = Instance;
+            this.pluginInstance = pluginInstance;
         }
 
         public bool AddBed(string bedName, string steamId, string position)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
 
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
-
-                int maxLimit = Instance.ConfigurationInstance.MaxHomesDefault;
+                int maxLimit = pluginInstance.ConfigurationInstance.MaxHomesDefault;
 
                 IUser user = userManager.GetUserAsync(steamId).GetAwaiter().GetResult();
-                IEnumerable<IPermissionGroup> userGroups = permissionProvider.GetGroupsAsync(user).GetAwaiter().GetResult();
+                IEnumerable<IPermissionGroup> userGroups = permissionProvider.GetGroupsAsync(user).GetAwaiter().GetResult().ToList();
 
-                foreach (var item in Instance.ConfigurationInstance.MaxHomesGroups)
+                foreach (var item in pluginInstance.ConfigurationInstance.MaxHomesGroups)
                 {
                     foreach (var rank in userGroups)
                     {
@@ -53,7 +51,7 @@ namespace TeleportationPlugin
                     return false;
                 }
 
-                TBedData bedData = new TBedData(steamId, bedName.ToLower(), position);
+                BedData bedData = new BedData(steamId, bedName.ToLower(), position);
 
                 BedsData.Insert(bedData);
             }
@@ -62,45 +60,42 @@ namespace TeleportationPlugin
 
         public string GetBed(string steamId, string bedName)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
 
                 if (!BedsData.Exists(x => x.BedName == bedName.ToLower() && x.SteamId == steamId))
                     return null;
 
-                TBedData bed = BedsData.FindOne(x => (x.SteamId == steamId) && (x.BedName == bedName.ToLower()));
+                BedData bed = BedsData.FindOne(x => (x.SteamId == steamId) && (x.BedName == bedName.ToLower()));
                 return bed.BedPosition;
             }
         }
 
         public bool ExistsBed(string steamId, string bedName)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
 
-                if (BedsData.Exists(x => x.BedName == bedName.ToLower() && x.SteamId == steamId))
-                    return true;
-                else
-                    return false;
+                return BedsData.Exists(x => x.BedName == bedName.ToLower() && x.SteamId == steamId);
             }
         }
 
         public void RemoveBed(string Id)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
                 BedsData.Delete(Id);
             }
         }
 
-        public IEnumerable<TBedData> GetAllBeds(string steamId)
+        public IEnumerable<BedData> GetAllBeds(string steamId)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
 
                 var beds = BedsData.Find(x => x.SteamId == steamId);
 
@@ -110,9 +105,9 @@ namespace TeleportationPlugin
 
         public bool RenameBed(UnturnedUser user, string oldName, string newName, string notFound, string existName)
         {
-            using (LiteDatabase liteDb = DbFinder.GetLiteDb("BedsDatabase.db", null))
+            using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
-                LiteCollection<TBedData> BedsData = liteDb.GetCollection<TBedData>("BedsData");
+                LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
 
                 if (!BedsData.Exists(x => x.BedName == oldName.ToLower() && x.SteamId == user.Id))
                 {
@@ -127,7 +122,7 @@ namespace TeleportationPlugin
                 }
                     
 
-                TBedData bed = BedsData.FindOne(x => (x.SteamId == user.Id) && (x.BedName == oldName.ToLower()));
+                BedData bed = BedsData.FindOne(x => (x.SteamId == user.Id) && (x.BedName == oldName.ToLower()));
 
                 bed.BedName = newName.ToLower();
                 BedsData.Update(bed);
@@ -135,18 +130,14 @@ namespace TeleportationPlugin
             return true;
         }
 
-        public class TBedData
+        public class BedData
         {
-            public TBedData(string steamId, string bedName, string bedPosition)
+            public BedData(string steamId, string bedName, string bedPosition)
             {
-                this.SteamId = steamId;
-                this.BedName = bedName;
-                this.BedPosition = bedPosition;
+                SteamId = steamId;
+                BedName = bedName;
+                BedPosition = bedPosition;
 
-            }
-
-            public TBedData()
-            {
             }
 
             [BsonId]
@@ -154,7 +145,7 @@ namespace TeleportationPlugin
             {
                 get
                 {
-                    return this.BedPosition;
+                    return BedPosition;
                 }
             }
 
@@ -162,7 +153,6 @@ namespace TeleportationPlugin
 
             public string BedName { get; set; }
             public string BedPosition { get; set; }
-
         }
     }
 }

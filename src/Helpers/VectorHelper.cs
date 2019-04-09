@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿
+using UnityEngine;
 
-namespace TeleportationPlugin.Models
+namespace RestoreMonarchy.TeleportationPlugin.Helpers
 {
-    public static class UTools
+    public static class VectorHelper
     {
         public static Vector3 StringToVector3(string sVector)
         {

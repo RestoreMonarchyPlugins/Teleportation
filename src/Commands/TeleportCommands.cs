@@ -4,6 +4,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NuGet.Protocol.Core.Types;
+using RestoreMonarchy.TeleportationPlugin.Requests;
 using Rocket.API.Commands;
 using Rocket.API.I18N;
 using Rocket.API.Permissions;
@@ -22,16 +24,16 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
         private readonly ITranslationCollection translations;
         private readonly IPermissionProvider permissionProvider;
         private readonly ITaskScheduler taskScheduler;
+        private readonly ITeleportationRequestManager requestsManager;
         private readonly TeleportationPlugin pluginInstance;
-        private readonly List<PlayerTeleportRequest> requests;
 
-        public TeleportCommands(ITranslationCollection translations, IPermissionProvider permissionProvider, ITaskScheduler taskScheduler, TeleportationPlugin pluginInstance, List<PlayerTeleportRequest> requests)
+        public TeleportCommands(ITranslationCollection translations, IPermissionProvider permissionProvider, ITaskScheduler taskScheduler, ITeleportationRequestManager requestsManager, TeleportationPlugin pluginInstance)
         {
             this.translations = translations;
             this.permissionProvider = permissionProvider;
             this.taskScheduler = taskScheduler;
+            this.requestsManager = requestsManager;
             this.pluginInstance = pluginInstance;
-            this.requests = requests;
         }
 
         [Command(Summary = "Teleportation requests list", Name = "tplist")]
@@ -39,10 +41,12 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
         [CommandUser(typeof(IPlayerUser))]
         public async Task TpList(IUser sender)
         {
-            if (requests.Exists(x => x.Receiver.Id == sender.Id))
+            var receiverRequests = requestsManager.GetRequestsForSender(sender).ToList();
+
+            if (receiverRequests.Any())
             {
                 StringBuilder stringList = new StringBuilder(await translations.GetAsync("TP_PendingFrom"));
-                requests.FindAll(x => x.Receiver.Id == sender.Id).ForEach(x => stringList.Append($" {x.Sender.DisplayName},"));
+                receiverRequests.ForEach(x => stringList.Append($" {x.Sender.DisplayName},"));
                 await sender.SendMessageAsync(stringList.ToString().TrimEnd(',', ' '), Color.Orange);
             }
             else
@@ -50,14 +54,15 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
                 await sender.SendMessageAsync(await translations.GetAsync("TP_NoRequestFrom"), Color.Orange);
             }
 
-            if (requests.Exists(x => x.Sender.Id == sender.Id))
+            var senderRequests = requestsManager.GetRequestsForSender(sender).ToList();
+            if (senderRequests.Any())
             {
                 StringBuilder stringList = new StringBuilder(await translations.GetAsync("TP_PendingTo"));
-                requests.FindAll(x => x.Sender.Id == sender.Id).ForEach(x => stringList.Append($" {x.Receiver.DisplayName},"));
+                senderRequests.ForEach(x => stringList.Append($" {x.Receiver.DisplayName},"));
                 await sender.SendMessageAsync(stringList.ToString().TrimEnd(',', ' '), Color.Orange);
             }
             else
-            {                
+            {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_NoRequestTo"), Color.Orange);
             }
         }
@@ -72,7 +77,9 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
                 await sender.SendMessageAsync(await translations.GetAsync("TP_Self"), Color.Orange);
                 return;
             }
-            if (requests.Exists(x => x.Sender.Id == sender.Id && x.Receiver.Id == target.User.Id))
+
+            var senderRequests = requestsManager.GetRequestsForSender(sender).ToList();
+            if (senderRequests.Any(x => x.Receiver.Id == target.User.Id))
             {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_AlreadySent", target.User.DisplayName), Color.Orange);
                 return;
@@ -93,13 +100,13 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
                 }
             }
 
-            if (requests.FindAll(x => x.Sender.Id == sender.Id).Count() == maxLimit)
+            if (senderRequests.Count == maxLimit)
             {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_Limit"));
                 return;
             }
 
-            requests.Add(new PlayerTeleportRequest() { Sender = sender, Receiver = target.User});
+            requestsManager.AddRequest(sender, target.User);
             await sender.SendMessageAsync(await translations.GetAsync("TP_Sent", target.User.DisplayName), Color.Orange);
             await target.User.SendMessageAsync(await translations.GetAsync("TP_Receive", sender.DisplayName), Color.Orange);
         }
@@ -107,50 +114,43 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
         [Command(Summary = "Accepts teleportation request", Name = "tpaccept")]
         [CommandAlias("tpa")]
         [CommandUser(typeof(IPlayerUser))]
-        public async Task TpAccept(ICommandContext context, IUser sender)
+        public async Task TpAccept(ICommandContext context)
         {
-            if (!requests.Exists(x => x.Receiver.Id == sender.Id))
+            var sender = context.User;
+
+            var receiverRequests = requestsManager.GetRequestsForReceiver(sender).ToList();
+            if (!receiverRequests.Any())
             {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_NoRequestFrom"), Color.Orange);
                 return;
             }
 
-            IUser target;
-            if (context.Parameters.Length > 0)
-            {
-                target = await context.Parameters.GetAsync<IUser>(0);
-            }
-            else
-            {
-                target = requests.First(x => x.Receiver.Id == sender.Id).Sender;
-                requests.RemoveAll(x => x.Receiver.Id == sender.Id && x.Sender.Id == target.Id);
-            }
+            PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
+            requestsManager.Process(request);
 
-            await sender.SendMessageAsync(await translations.GetAsync("TP_Accept", target.DisplayName),
-                Color.Orange);
-            await target.SendMessageAsync(await translations.GetAsync("TP_Accepted", sender.DisplayName),
-                Color.Orange);
-
-            taskScheduler.ScheduleDelayed(pluginInstance, async () => await UTeleportation(sender, target),
-                "Teleportation Task", TimeSpan.FromSeconds(pluginInstance.ConfigurationInstance.TeleportationDelay), true);
+            var target = request.Receiver;
+            await sender.SendMessageAsync(await translations.GetAsync("TP_Accept", target.DisplayName), Color.Orange);
+            await target.SendMessageAsync(await translations.GetAsync("TP_Accepted", sender.DisplayName), Color.Orange);
         }
 
         [Command(Summary = "Denies teleportation request", Name = "tpdeny")]
         [CommandAlias("tpd")]
         [CommandUser(typeof(IPlayerUser))]
-        public async Task TpDeny(ICommandContext context, IUser sender)
+        public async Task TpDeny(ICommandContext context)
         {
-            if (!requests.Exists(x => x.Receiver.Id == sender.Id))
+            var sender = context.User;
+
+            var receiverRequests = requestsManager.GetRequestsForReceiver(sender).ToList();
+            if (!receiverRequests.Any())
             {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_NoRequestTo"), Color.Orange);
                 return;
             }
 
-            var target = context.Parameters.Length > 0
-                ? await context.Parameters.GetAsync<IUser>(0)
-                : requests.First(x => x.Receiver.Id == sender.Id).Sender;
+            PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
+            requestsManager.Remove(request);
 
-            requests.RemoveAll(x => x.Receiver.Id == sender.Id && x.Sender.Id == target.Id);
+            var target = request.Receiver;
             await sender.SendMessageAsync(await translations.GetAsync("TP_Deny", target.DisplayName), Color.Orange);
             await target.SendMessageAsync(await translations.GetAsync("TP_Denied", sender.DisplayName), Color.Orange);
         }
@@ -158,46 +158,38 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
         [Command(Summary = "Cancels teleportation request", Name = "tpcancel")]
         [CommandAlias("tpc")]
         [CommandUser(typeof(IPlayerUser))]
-        public async Task TpCancel(ICommandContext context, IUser sender)
+        public async Task TpCancel(ICommandContext context)
         {
-            if (!requests.Exists(x => x.Sender.Id == sender.Id))
+            var sender = context.User;
+
+            var senderRequests = requestsManager.GetRequestsForSender(sender).ToList();
+            if (!senderRequests.Any())
             {
                 await sender.SendMessageAsync(await translations.GetAsync("TP_NoRequestFrom"), Color.Orange);
                 return;
             }
 
-            IUser target;
+            PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
+            requestsManager.Remove(request);
+
+            await sender.SendMessageAsync(await translations.GetAsync("TP_Cancel", request.Receiver.DisplayName), Color.Orange);
+        }
+
+        private async Task<PlayerTeleportRequest> GetRequestFromContextAsync(ICommandContext context, bool isReceiver)
+        {
+            var sender = context.User;
+
+            var requests = isReceiver ? requestsManager.GetRequestsForReceiver(sender) : requestsManager.GetRequestsForSender(sender);
+
             if (context.Parameters.Length > 0)
             {
-                target = await context.Parameters.GetAsync<IUser>(0);
-                requests.RemoveAll(x => x.Sender.Id == sender.Id && x.Receiver.Id == target.Id);
+                var player = await context.Parameters.GetAsync<IUser>(0);
+                return requests.First(x => x.Receiver.Id == player.Id);
             }
             else
             {
-                target = requests.First(x => x.Receiver.Id == sender.Id).Sender;
-                requests.RemoveAll(x => x.Sender.Id == sender.Id && x.Receiver.Id == target.Id);
+                return requests.First(x => x.Receiver.Id == sender.Id);
             }
-
-            await sender.SendMessageAsync(await translations.GetAsync("TP_Cancel", target.DisplayName), Color.Orange);
-        }
-
-        public async Task UTeleportation(IUser user, IUser target)
-        {
-            UnturnedUser uTarget = (UnturnedUser)target;
-            UnturnedUser uSender = (UnturnedUser)user;
-
-            if (!uTarget.Player.IsOnline || uTarget.Player.Entity.Dead)
-            {
-                await target.SendMessageAsync(await translations.GetAsync("TP_Dead", user.DisplayName), Color.Orange);
-                return;
-            }
-
-            uTarget.Player.Entity.Teleport(uSender.Player);
-            await user.SendMessageAsync(await translations.GetAsync("TP_Teleport", target.DisplayName),
-                Color.Orange);
-            await target.SendMessageAsync(await translations.GetAsync("TP_Teleported", user.DisplayName),
-                Color.Orange);
-            requests.RemoveAll(x => x.Receiver.Id == user.Id && x.Sender.Id == target.Id);
         }
     }
 }

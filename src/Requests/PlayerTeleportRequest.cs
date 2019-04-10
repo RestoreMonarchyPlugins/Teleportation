@@ -1,6 +1,6 @@
 ﻿using Rocket.API.User;
 
-namespace RestoreMonarchy.TeleportationPlugin
+namespace RestoreMonarchy.TeleportationPlugin.Requests
 {
     public class PlayerTeleportRequest
     {

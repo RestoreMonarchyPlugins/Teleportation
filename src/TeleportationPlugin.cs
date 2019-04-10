@@ -3,15 +3,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using Harmony;
 using RestoreMonarchy.TeleportationPlugin.Commands;
+using RestoreMonarchy.TeleportationPlugin.Requests;
 using Rocket.API.DependencyInjection;
-using Rocket.API.Eventing;
 using Rocket.API.Logging;
 using Rocket.API.Permissions;
 using Rocket.API.Scheduling;
 using Rocket.API.User;
-using Rocket.Core.Eventing;
 using Rocket.Core.Logging;
-using Rocket.Core.Player.Events;
 using Rocket.Core.Plugins;
 
 namespace RestoreMonarchy.TeleportationPlugin
@@ -23,19 +21,20 @@ namespace RestoreMonarchy.TeleportationPlugin
         private readonly IPermissionProvider permissionProvider;
         private readonly ILogger logger;
         private readonly ITaskScheduler taskScheduler;
+        private readonly ITeleportationRequestManager requestsManager;
         private HarmonyInstance harmonyInstance;
 
         // Only to be used by harmony patches
         internal static TeleportationPlugin Instance { get; set; }
 
-        public List<PlayerTeleportRequest> PendingRequests { get; } = new List<PlayerTeleportRequest>();
         public TeleportationDatabase Database { get; set; }
 
-        public TeleportationPlugin(IDependencyContainer container, IUserManager userManager, IPermissionProvider permissionProvider, ILogger logger, ITaskScheduler taskScheduler) : base(container)
+        public TeleportationPlugin(IDependencyContainer container, IUserManager userManager, IPermissionProvider permissionProvider, ILogger logger, ITaskScheduler taskScheduler, ITeleportationRequestManager requestsManager) : base(container)
         {
             this.permissionProvider = permissionProvider;
             this.logger = logger;
             this.taskScheduler = taskScheduler;
+            this.requestsManager = requestsManager;
 
             Instance = this;
             Database = new TeleportationDatabase(userManager, permissionProvider, this);
@@ -73,10 +72,15 @@ namespace RestoreMonarchy.TeleportationPlugin
 
         protected override async Task OnActivate(bool isFromReload)
         {
-            EventBus.AddEventListener(this, new TeleportationEventListener(PendingRequests));
+            if (requestsManager is TeleportationRequestManager tpRequestManager)
+            {
+                tpRequestManager.SetPluginInstance(this);
+            }
 
-            TeleportCommands tpaCommand = new TeleportCommands(Translations, permissionProvider, taskScheduler ,this, PendingRequests);
-            HomeCommands homeCommand = new HomeCommands( Translations, taskScheduler, Database, this);
+            EventBus.AddEventListener(this, new TeleportationEventListener(requestsManager));
+
+            TeleportCommands tpaCommand = new TeleportCommands(Translations, permissionProvider, taskScheduler, requestsManager, this);
+            HomeCommands homeCommand = new HomeCommands(Translations, taskScheduler, Database, this);
 
             if (ConfigurationInstance.TPEnabled)
                 RegisterCommands(tpaCommand);
@@ -106,25 +110,13 @@ namespace RestoreMonarchy.TeleportationPlugin
 
         protected override async Task OnDeactivate()
         {
+            if (requestsManager is TeleportationRequestManager tpRequestManager)
+            {
+                tpRequestManager.SetPluginInstance(null);
+            }
+
             harmonyInstance?.UnpatchAll(HarmonyInstanceId);
             harmonyInstance = null;
-        }
-    }
-
-    public class TeleportationEventListener : IEventListener<PlayerDisconnectedEvent>
-    {
-        private readonly List<PlayerTeleportRequest> teleportationRequests;
-
-        public TeleportationEventListener(List<PlayerTeleportRequest> teleportationRequests)
-        {
-            this.teleportationRequests = teleportationRequests;
-        }
-
-        [EventHandler]
-        public async Task HandleEventAsync(IEventEmitter emitter, PlayerDisconnectedEvent @event)
-        {
-            teleportationRequests.RemoveAll(x=> x.Receiver.Id == @event.Player.User.Id);
-            teleportationRequests.RemoveAll(x => x.Sender.Id == @event.Player.User.Id);
         }
     }
 }

@@ -78,13 +78,13 @@ namespace RestoreMonarchy.TeleportationPlugin.Requests
 
             if (!uTarget.Player.IsOnline || uTarget.Player.Entity.Dead)
             {
-                await target.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Dead", sender.DisplayName), Color.Orange);
+                await sender.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Dead", target.DisplayName), Color.Orange);
                 return;
             }
 
-            await uTarget.Player.Entity.TeleportAsync(uSender.Player.Entity.Position, 0);
-            await sender.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Teleport", target.DisplayName), Color.Orange);
-            await target.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Teleported", sender.DisplayName), Color.Orange);
+            await uSender.Player.Entity.TeleportAsync(uTarget.Player.Entity.Position, 0);
+            await target.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Teleport", sender.DisplayName), Color.Orange);
+            await sender.SendMessageAsync(await pluginInstance.Translations.GetAsync("TP_Teleported", target.DisplayName), Color.Orange);
 
             pendingRequests.RemoveAll(x => x.Receiver.Id == target.Id && x.Sender.Id == sender.Id);
         }

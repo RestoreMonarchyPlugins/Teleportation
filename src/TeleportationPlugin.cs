@@ -58,7 +58,7 @@ namespace RestoreMonarchy.TeleportationPlugin
             {"TP_AlreadySent", "You've already sent a request to {0}"},
             {"TP_Limit", "You have sent to many requests, you may cancel them using /tpcancel"},
             {"TP_Sent", "You sent a request to {0}"},
-            {"TP_Receive", "{0} sent you request. Respond with /tpadeny or /tpaccept"},
+            {"TP_Receive", "{0} sent you request. Respond with /tpdeny or /tpaccept"},
             {"TP_Accept", "You accepted {0} request"},
             {"TP_Accepted", "{0} accepted your request"},
             {"TP_Teleport", "{0} teleported to you"},

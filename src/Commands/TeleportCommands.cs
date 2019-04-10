@@ -41,7 +41,7 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
         [CommandUser(typeof(IPlayerUser))]
         public async Task TpList(IUser sender)
         {
-            var receiverRequests = requestsManager.GetRequestsForSender(sender).ToList();
+            var receiverRequests = requestsManager.GetRequestsForReceiver(sender).ToList();
 
             if (receiverRequests.Any())
             {
@@ -128,7 +128,7 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
             PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
             requestsManager.Process(request);
 
-            var target = request.Receiver;
+            var target = request.Sender;
             await sender.SendMessageAsync(await translations.GetAsync("TP_Accept", target.DisplayName), Color.Orange);
             await target.SendMessageAsync(await translations.GetAsync("TP_Accepted", sender.DisplayName), Color.Orange);
         }
@@ -150,7 +150,7 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
             PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
             requestsManager.Remove(request);
 
-            var target = request.Receiver;
+            var target = request.Sender;
             await sender.SendMessageAsync(await translations.GetAsync("TP_Deny", target.DisplayName), Color.Orange);
             await target.SendMessageAsync(await translations.GetAsync("TP_Denied", sender.DisplayName), Color.Orange);
         }
@@ -169,7 +169,7 @@ namespace RestoreMonarchy.TeleportationPlugin.Commands
                 return;
             }
 
-            PlayerTeleportRequest request = await GetRequestFromContextAsync(context, true);
+            PlayerTeleportRequest request = await GetRequestFromContextAsync(context, false);
             requestsManager.Remove(request);
 
             await sender.SendMessageAsync(await translations.GetAsync("TP_Cancel", request.Receiver.DisplayName), Color.Orange);

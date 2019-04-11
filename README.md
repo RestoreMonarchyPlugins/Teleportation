@@ -1,4 +1,4 @@
-# Teleportation - Unturned Plugin
+# Teleportation - Unturned Plugin [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://discord.gg/yBztk3w)
 * Allows players to teleport to each other
 * Allows players to have multiple beds claimed *configurable*
 * You can set a delay for teleportation

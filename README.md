@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg) [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://discord.gg/yBztk3w)
+[![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases) [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://discord.gg/yBztk3w)
 # Teleportation - Unturned Plugin
 * Allows players to teleport to each other
 * Allows players to have multiple beds claimed *configurable*

@@ -1,4 +1,5 @@
-# Teleportation - Unturned Plugin [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://discord.gg/yBztk3w)
+[![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases) [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://discord.gg/yBztk3w)
+# Teleportation - Unturned Plugin
 * Allows players to teleport to each other
 * Allows players to have multiple beds claimed *configurable*
 * You can set a delay for teleportation
@@ -12,13 +13,13 @@ You can download the latest release from [here](https://github.com/RestoreMonarc
 then type in your server console `rocket install Teleportation`
 
 ## Commands
-* /tprequest <player> - Sends a request to the player
+* /tprequest \<player\> - Sends a request to the player
 * /tpaccept (player) - Accepts teleportation
 * /tplist - Displays a list of teleportation from and to you
 * /tpcancel (player) - Cancels your request to the player
 * /home (name) - Teleports you to bed
 * /homes - Displays a list of your beds
-* /renamehome <oldName> <newName> - Renames your bed with old name to new name <br />
+* /renamehome \<oldName\> \<newName\> - Renames your bed with old name to new name <br />
 <> means required parameter & () means optional parameter  
 Aliases: /tpr, /tpa, /tpl, /tpc, /bed, /beds, /renamebed
 

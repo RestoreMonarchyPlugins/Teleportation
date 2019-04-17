@@ -51,7 +51,7 @@ namespace RestoreMonarchy.TeleportationPlugin
                     return false;
                 }
 
-                BedData bedData = new BedData(steamId, bedName.ToLower(), position);
+                BedData bedData = new BedData() { SteamId = steamId, BedName = bedName.ToLower(), BedPosition = position };
 
                 BedsData.Insert(bedData);
             }
@@ -82,12 +82,12 @@ namespace RestoreMonarchy.TeleportationPlugin
             }
         }
 
-        public void RemoveBed(string Id)
+        public void RemoveBed(string position)
         {
             using (LiteDatabase liteDb = DbHelper.GetLiteDb(pluginInstance, "BedsDatabase.db"))
             {
                 LiteCollection<BedData> BedsData = liteDb.GetCollection<BedData>("BedsData");
-                BedsData.Delete(Id);
+                BedsData.Delete(x=> x.BedPosition == position);
             }
         }
 
@@ -132,26 +132,13 @@ namespace RestoreMonarchy.TeleportationPlugin
 
         public class BedData
         {
-            public BedData(string steamId, string bedName, string bedPosition)
-            {
-                SteamId = steamId;
-                BedName = bedName;
-                BedPosition = bedPosition;
-
-            }
-
-            [BsonId]
-            public string Id
-            {
-                get
-                {
-                    return BedPosition;
-                }
-            }
+            [BsonId(true)]
+            public ObjectId Id { get; set; }
 
             public string SteamId { get; set; }
 
             public string BedName { get; set; }
+
             public string BedPosition { get; set; }
         }
     }

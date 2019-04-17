@@ -29,7 +29,7 @@ namespace RestoreMonarchy.TeleportationPlugin
 
         public TeleportationDatabase Database { get; set; }
 
-        public TeleportationPlugin(IDependencyContainer container, IUserManager userManager, IPermissionProvider permissionProvider, ILogger logger, ITaskScheduler taskScheduler, ITeleportationRequestManager requestsManager) : base(container)
+        public TeleportationPlugin(IDependencyContainer container, IUserManager userManager, IPermissionProvider permissionProvider, ILogger logger, ITaskScheduler taskScheduler, ITeleportationRequestManager requestsManager) : base("Teleportation", container)
         {
             this.permissionProvider = permissionProvider;
             this.logger = logger;
@@ -77,19 +77,20 @@ namespace RestoreMonarchy.TeleportationPlugin
                 tpRequestManager.SetPluginInstance(this);
             }
 
-            EventBus.AddEventListener(this, new TeleportationEventListener(requestsManager));
-
-            TeleportCommands tpaCommand = new TeleportCommands(Translations, permissionProvider, taskScheduler, requestsManager, this);
-            HomeCommands homeCommand = new HomeCommands(Translations, taskScheduler, Database, this);
-
             if (ConfigurationInstance.TPEnabled)
+            {
+                TeleportCommands tpaCommand = new TeleportCommands(Translations, permissionProvider, taskScheduler, requestsManager, this);
+                EventBus.AddEventListener(this, new TeleportationEventListener(requestsManager));
                 RegisterCommands(tpaCommand);
+            }   
 
             if (ConfigurationInstance.HomeEnabled)
+            {
+                HomeCommands homeCommand = new HomeCommands(Translations, taskScheduler, Database, this);
                 RegisterCommands(homeCommand);
-
-            harmonyInstance = HarmonyInstance.Create(HarmonyInstanceId);
-            harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+                harmonyInstance = HarmonyInstance.Create(HarmonyInstanceId);
+                harmonyInstance.PatchAll(Assembly.GetExecutingAssembly());
+            }
 
             logger.LogInformation($"{Assembly.GetExecutingAssembly().GetName().Name} has been loaded!", LogLevel.Information);
             logger.LogInformation($"Version: {Assembly.GetExecutingAssembly().GetName().Version}", LogLevel.Information);
@@ -114,9 +115,11 @@ namespace RestoreMonarchy.TeleportationPlugin
             {
                 tpRequestManager.SetPluginInstance(null);
             }
-
-            harmonyInstance?.UnpatchAll(HarmonyInstanceId);
-            harmonyInstance = null;
+            if (ConfigurationInstance.HomeEnabled)
+            {
+                harmonyInstance?.UnpatchAll(HarmonyInstanceId);
+                harmonyInstance = null;
+            }               
         }
     }
 }

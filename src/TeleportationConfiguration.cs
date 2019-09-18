@@ -1,15 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using Rocket.API;
 
-namespace RestoreMonarchy.TeleportationPlugin
+namespace Teleportation
 {
-    public class TeleportationConfiguration
+    public class TeleportationConfiguration : IRocketPluginConfiguration
     {
-        public bool TPEnabled { get; set; } = true;
-        public bool HomeEnabled { get; set; } = true;
-        public int TeleportationDelay { get; set; } = 3;
-        public int MaxRequestsDefault { get; set; } = 3;
-        public int MaxHomesDefault { get; set; } = 1;
-        public Dictionary<string, byte> MaxHomesGroups { get; set; } = new Dictionary<string, byte> { {"vip", 3}, {"moderator", 5} };
-        public Dictionary<string, byte> MaxRequestsGroups { get; set; } = new Dictionary<string, byte> { { "vip", 5 }, { "moderator", 8 } };
+        public string MessageColor { get; set; }
+        public double TPACooldown { get; set; }
+        public double TPADelay { get; set; }
+        public bool AllowCave { get; set; }
+        public bool AllowRaid { get; set; }
+        public double RaidDuration { get; set; }
+        public bool AllowCombat { get; set; }
+        public double CombatDuration { get; set; }
+
+        public void LoadDefaults()
+        {
+            MessageColor = "gray";
+            TPACooldown = 90;
+            TPADelay = 3;
+            AllowCave = false;
+            AllowRaid = false;
+            RaidDuration = 30;
+            AllowCombat = false;
+            CombatDuration = 20;
+        }
     }
 }

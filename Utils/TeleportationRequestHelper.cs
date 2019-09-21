@@ -19,7 +19,7 @@ namespace Teleportation.Utils
             if (plugin.Cooldowns.TryGetValue(sender.CSteamID, out DateTime lastUse))
             {
                 double secondsElapsed = (DateTime.Now - lastUse).TotalSeconds;
-                if (secondsElapsed > plugin.Configuration.Instance.TPACooldown)
+                if (secondsElapsed < plugin.Configuration.Instance.TPACooldown)
                 {
                     UnturnedChat.Say(sender, plugin.Translate("TPACooldown", plugin.Configuration.Instance.TPACooldown - secondsElapsed), plugin.MessageColor);
                     return;

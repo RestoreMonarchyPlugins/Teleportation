@@ -48,10 +48,14 @@ namespace Teleportation
 
         private void OnBuildingDamaged(CSteamID instigatorSteamID, Transform barricadeTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
         {
-            var player = UnturnedPlayer.FromSteamPlayer(PlayerTool.getSteamPlayer(instigatorSteamID));
+            SteamPlayer steamPlayer;
+            if ((steamPlayer = PlayerTool.getSteamPlayer(instigatorSteamID)) != null)
+            {
+                var player = UnturnedPlayer.FromSteamPlayer(steamPlayer);
 
-            if (player != null)
-                this.StartPlayerRaid(player);                
+                if (player != null)
+                    this.StartPlayerRaid(instigatorSteamID);
+            }                         
         }
 
         private void OnPlayerDamaged(Player player, ref EDeathCause cause, ref ELimb limb, ref CSteamID killer, ref Vector3 direction, ref float damage, ref float times, ref bool canDamage)
@@ -60,8 +64,8 @@ namespace Teleportation
 
             if (killerPlayer != null)
             {
-                this.StartPlayerCombat(UnturnedPlayer.FromSteamPlayer(killerPlayer));
-                this.StartPlayerCombat(UnturnedPlayer.FromPlayer(player));
+                this.StartPlayerCombat(killer);
+                this.StartPlayerCombat(player.channel.owner.playerID.steamID);
             }
         }
 

@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Teleportation.Utils;
+using RestoreMonarchy.Teleportation.Utils;
 
-namespace Teleportation.Commands
+namespace RestoreMonarchy.Teleportation.Commands
 {
     public class TPACommand : IRocketCommand
     {

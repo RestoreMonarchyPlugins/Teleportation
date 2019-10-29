@@ -2,9 +2,9 @@
 using Rocket.Unturned.Player;
 using System;
 using System.Linq;
-using Teleportation.Models;
+using RestoreMonarchy.Teleportation.Models;
 
-namespace Teleportation.Utils
+namespace RestoreMonarchy.Teleportation.Utils
 {
     public static class TeleportationRequestHelper
     {
@@ -19,9 +19,10 @@ namespace Teleportation.Utils
             if (plugin.Cooldowns.TryGetValue(sender.CSteamID, out DateTime lastUse))
             {
                 double secondsElapsed = (DateTime.Now - lastUse).TotalSeconds;
+                double timeLeft = Math.Round(plugin.Configuration.Instance.TPACooldown - secondsElapsed);
                 if (secondsElapsed < plugin.Configuration.Instance.TPACooldown)
                 {
-                    UnturnedChat.Say(sender, plugin.Translate("TPACooldown", plugin.Configuration.Instance.TPACooldown - secondsElapsed), plugin.MessageColor);
+                    UnturnedChat.Say(sender, plugin.Translate("TPACooldown", timeLeft), plugin.MessageColor);
                     return;
                 }
             }

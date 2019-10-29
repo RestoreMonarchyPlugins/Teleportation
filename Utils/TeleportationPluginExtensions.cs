@@ -1,9 +1,10 @@
 ﻿using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
+using SDG.Unturned;
 using Steamworks;
 using System.Timers;
 
-namespace Teleportation.Utils
+namespace RestoreMonarchy.Teleportation.Utils
 {
     public static class TeleportationPluginExtensions
     {
@@ -57,6 +58,42 @@ namespace Teleportation.Utils
 
                 UnturnedChat.Say(steamID, plugin.Translate("RaidStart"), plugin.MessageColor);
             }
+        }
+
+        public static bool IsPlayerInRaid(this TeleportationPlugin plugin, CSteamID steamID)
+        {
+            if (!plugin.Configuration.Instance.AllowRaid)
+            {
+                if (plugin.RaidPlayers.TryGetValue(steamID.m_SteamID, out Timer timer) && timer.Enabled)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsPlayerInCombat(this TeleportationPlugin plugin, CSteamID steamID)
+        {
+            if (!plugin.Configuration.Instance.AllowCombat)
+            {
+                if (plugin.CombatPlayers.TryGetValue(steamID.m_SteamID, out Timer timer) && timer.Enabled)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool IsPlayerInCave(this TeleportationPlugin plugin, UnturnedPlayer player)
+        {
+            if (!plugin.Configuration.Instance.AllowCave)
+            {
+                if (LevelGround.checkSafe(player.Position) != player.Position)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }

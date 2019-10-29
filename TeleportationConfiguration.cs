@@ -1,6 +1,6 @@
 ﻿using Rocket.API;
 
-namespace Teleportation
+namespace RestoreMonarchy.Teleportation
 {
     public class TeleportationConfiguration : IRocketPluginConfiguration
     {

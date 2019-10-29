@@ -9,8 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
+using RestoreMonarchy.Teleportation.Utils;
 
-namespace Teleportation.Models
+namespace RestoreMonarchy.Teleportation.Models
 {
     public class TPARequest
     {
@@ -38,12 +39,12 @@ namespace Teleportation.Models
 
             TaskDispatcher.QueueOnMainThread(() =>
             {
-                if (!plugin.Configuration.Instance.AllowCombat && plugin.CombatPlayers.TryGetValue(Sender.m_SteamID, out Timer timer) && timer.Enabled)
+                if (plugin.IsPlayerInCombat(sender.CSteamID))
                 {
                     UnturnedChat.Say(Sender, plugin.Translate("TPAWhileCombat", target.DisplayName), plugin.MessageColor);
                     UnturnedChat.Say(Target, plugin.Translate("TPAWhileCombat", sender.DisplayName), plugin.MessageColor);
                     return;
-                } else if (!plugin.Configuration.Instance.AllowRaid && plugin.RaidPlayers.TryGetValue(Sender.m_SteamID, out Timer timer2) && timer2.Enabled)
+                } else if (plugin.IsPlayerInRaid(sender.CSteamID))
                 {
                     UnturnedChat.Say(Sender, plugin.Translate("TPAWhileRaid", target.DisplayName), plugin.MessageColor);
                     UnturnedChat.Say(Target, plugin.Translate("TPAWhileRaid", sender.DisplayName), plugin.MessageColor);
@@ -52,7 +53,7 @@ namespace Teleportation.Models
                 {
                     UnturnedChat.Say(Sender, plugin.Translate("TPADead", target.DisplayName), plugin.MessageColor);
                     UnturnedChat.Say(Target, plugin.Translate("TPADead", sender.DisplayName), plugin.MessageColor);
-                } else if (!plugin.Configuration.Instance.AllowCave && LevelGround.checkSafe(target.Position) != target.Position)
+                } else if (plugin.IsPlayerInCave(target))
                 {
                     UnturnedChat.Say(Sender, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);
                     UnturnedChat.Say(Target, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);

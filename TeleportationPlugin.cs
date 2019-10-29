@@ -7,12 +7,12 @@ using Steamworks;
 using System;
 using System.Collections.Generic;
 using System.Timers;
-using Teleportation.Models;
-using Teleportation.Utils;
+using RestoreMonarchy.Teleportation.Models;
+using RestoreMonarchy.Teleportation.Utils;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 
-namespace Teleportation
+namespace RestoreMonarchy.Teleportation
 {
     public class TeleportationPlugin : RocketPlugin<TeleportationConfiguration>
     {

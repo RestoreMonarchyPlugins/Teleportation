@@ -1,5 +1,5 @@
 [![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases) [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://restoremonarchy.com/discord)
-# Teleportation - Unturned Plugin
+# Teleportation
 * Don't allow players to run away from combat or while raiding
 * Don't allow players to teleport while they are in cave or glitched underground
 * Notifies when combat/raid mode starts and expires

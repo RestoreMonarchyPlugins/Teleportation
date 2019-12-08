@@ -3,6 +3,7 @@ using Rocket.Unturned.Player;
 using System;
 using System.Linq;
 using RestoreMonarchy.Teleportation.Models;
+using Steamworks;
 
 namespace RestoreMonarchy.Teleportation.Utils
 {
@@ -77,6 +78,17 @@ namespace RestoreMonarchy.Teleportation.Utils
             else
             {
                 UnturnedChat.Say(caller, plugin.Translate("TPANoRequest"), plugin.MessageColor);
+            }
+        }
+
+        public static void ClearPlayerRequests(this TeleportationPlugin plugin, CSteamID steamID)
+        {
+            foreach (var request in plugin.TPRequests)
+            {
+                if (request.Sender == steamID || request.Target == steamID)
+                {
+                    plugin.TPRequests.Remove(request);
+                }
             }
         }
     }

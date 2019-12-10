@@ -12,6 +12,10 @@ namespace RestoreMonarchy.Teleportation
         public double RaidDuration { get; set; }
         public bool AllowCombat { get; set; }
         public double CombatDuration { get; set; }
+        public bool BlockCommandsInCave { get; set; }
+        public bool BlockCommandsInRaid { get; set; }
+        public bool BlockCommandsInCombat { get; set; }
+        public bool CancelOnMove { get; set; }
 
         public void LoadDefaults()
         {
@@ -23,6 +27,10 @@ namespace RestoreMonarchy.Teleportation
             RaidDuration = 30;
             AllowCombat = false;
             CombatDuration = 20;
+            BlockCommandsInCave = false;
+            BlockCommandsInRaid = true;
+            BlockCommandsInCombat = true;
+            CancelOnMove = true;
         }
     }
 }

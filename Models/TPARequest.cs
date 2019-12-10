@@ -1,19 +1,13 @@
 ﻿using Rocket.Core.Utils;
 using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
-using SDG.Unturned;
 using Steamworks;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Timers;
 using RestoreMonarchy.Teleportation.Utils;
+using UnityEngine;
 
 namespace RestoreMonarchy.Teleportation.Models
 {
-    public class TPARequest
+    public class TPARequest : ITeleport
     {
         public TPARequest(CSteamID sender, CSteamID target)
         {
@@ -26,45 +20,66 @@ namespace RestoreMonarchy.Teleportation.Models
         public CSteamID Sender { get; set; }
         public CSteamID Target { get; set; }
 
+        private TeleportationPlugin pluginInstance = TeleportationPlugin.Instance;
+        private bool cancel = false;
+
         public void Execute(double delay)
         {
-            var plugin = TeleportationPlugin.Instance;
             var sender = UnturnedPlayer.FromCSteamID(Sender);
             var target = UnturnedPlayer.FromCSteamID(Target);
             
+            if (pluginInstance.Configuration.Instance.CancelOnMove)
+            {
+                var comp = pluginInstance.TryAddComponent<MovementDetector>();
+                if (comp != null)
+                    comp.Initialize(this, sender, target);
+            }
+
             if (delay > 0)
             {
-                UnturnedChat.Say(Sender, plugin.Translate("TPADelay", target.DisplayName, delay), plugin.MessageColor);
+                UnturnedChat.Say(Sender, pluginInstance.Translate("TPADelay", target.DisplayName, delay), pluginInstance.MessageColor);
             }
 
             TaskDispatcher.QueueOnMainThread(() =>
             {
-                if (plugin.IsPlayerInCombat(sender.CSteamID))
+                if (!cancel)
                 {
-                    UnturnedChat.Say(Sender, plugin.Translate("TPAWhileCombat", target.DisplayName), plugin.MessageColor);
-                    UnturnedChat.Say(Target, plugin.Translate("TPAWhileCombat", sender.DisplayName), plugin.MessageColor);
-                    return;
-                } else if (plugin.IsPlayerInRaid(sender.CSteamID))
-                {
-                    UnturnedChat.Say(Sender, plugin.Translate("TPAWhileRaid", target.DisplayName), plugin.MessageColor);
-                    UnturnedChat.Say(Target, plugin.Translate("TPAWhileRaid", sender.DisplayName), plugin.MessageColor);
-                    return;
-                } else if (sender.Dead || target.Dead)
-                {
-                    UnturnedChat.Say(Sender, plugin.Translate("TPADead", target.DisplayName), plugin.MessageColor);
-                    UnturnedChat.Say(Target, plugin.Translate("TPADead", sender.DisplayName), plugin.MessageColor);
-                } else if (plugin.IsPlayerInCave(target))
-                {
-                    UnturnedChat.Say(Sender, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);
-                    UnturnedChat.Say(Target, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);
+                    if (pluginInstance.IsPlayerInCombat(sender.CSteamID))
+                    {
+                        UnturnedChat.Say(Sender, pluginInstance.Translate("TPAWhileCombat", target.DisplayName), pluginInstance.MessageColor);
+                        UnturnedChat.Say(Target, pluginInstance.Translate("TPAWhileCombat", sender.DisplayName), pluginInstance.MessageColor);
+                        return;
+                    }
+                    else if (pluginInstance.IsPlayerInRaid(sender.CSteamID))
+                    {
+                        UnturnedChat.Say(Sender, pluginInstance.Translate("TPAWhileRaid", target.DisplayName), pluginInstance.MessageColor);
+                        UnturnedChat.Say(Target, pluginInstance.Translate("TPAWhileRaid", sender.DisplayName), pluginInstance.MessageColor);
+                        return;
+                    }
+                    else if (sender.Dead || target.Dead)
+                    {
+                        UnturnedChat.Say(Sender, pluginInstance.Translate("TPADead", target.DisplayName), pluginInstance.MessageColor);
+                        UnturnedChat.Say(Target, pluginInstance.Translate("TPADead", sender.DisplayName), pluginInstance.MessageColor);
+                    }
+                    else if (pluginInstance.IsPlayerInCave(target))
+                    {
+                        UnturnedChat.Say(Sender, pluginInstance.Translate("TPACave", target.DisplayName), pluginInstance.MessageColor);
+                        UnturnedChat.Say(Target, pluginInstance.Translate("TPACave", target.DisplayName), pluginInstance.MessageColor);
+                    }
+                    else
+                    {
+                        sender.Teleport(target);
+                        UnturnedChat.Say(Sender, pluginInstance.Translate("TPASuccess", target.DisplayName), pluginInstance.MessageColor);
+                    }
                 }
-                else
-                {
-                    sender.Teleport(target);
-                    UnturnedChat.Say(Sender, plugin.Translate("TPASuccess", target.DisplayName), plugin.MessageColor);
-                }
-
             }, (float)delay);
+        }
+
+        public void Cancel(string message)
+        {            
+            cancel = true;
+            UnturnedChat.Say(Sender, message, pluginInstance.MessageColor);
+            UnturnedChat.Say(Target, message, pluginInstance.MessageColor);
         }
     }
 }

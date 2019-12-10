@@ -12,6 +12,8 @@ using RestoreMonarchy.Teleportation.Utils;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 using Rocket.Unturned;
+using Rocket.Core;
+using Rocket.API;
 
 namespace RestoreMonarchy.Teleportation
 {
@@ -34,10 +36,37 @@ namespace RestoreMonarchy.Teleportation
             Cooldowns = new Dictionary<CSteamID, DateTime>();
 
             U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
+            R.Commands.OnExecuteCommand += OnExecuteCommand;
             DamageTool.playerDamaged += OnPlayerDamaged;
             BarricadeManager.onDamageBarricadeRequested += OnBuildingDamaged;
             StructureManager.onDamageStructureRequested += OnBuildingDamaged;
             Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
+        }
+
+        private void OnExecuteCommand(IRocketPlayer player, IRocketCommand command, ref bool cancel)
+        {
+            if (player.Id != "Console")
+            {
+                UnturnedPlayer unturnedPlayer = (UnturnedPlayer)player;
+                if (Configuration.Instance.BlockCommandsInCombat && this.IsPlayerInCombat(unturnedPlayer.CSteamID))
+                {
+                    cancel = true;
+                    UnturnedChat.Say(player, Translate("CommandWhileCombat"), MessageColor);
+                    return;
+                }
+                if (Configuration.Instance.BlockCommandsInRaid && this.IsPlayerInRaid(unturnedPlayer.CSteamID))
+                {
+                    cancel = true;
+                    UnturnedChat.Say(player, Translate("CommandWhileRaid"), MessageColor);
+                    return;
+                }
+                if (Configuration.Instance.BlockCommandsInCave && this.IsPlayerInCave(unturnedPlayer))
+                {
+                    cancel = true;
+                    UnturnedChat.Say(player, Translate("CommandWhileCave"), MessageColor);
+                    return;
+                }
+            }
         }
 
         private void OnPlayerDisconnected(UnturnedPlayer player)
@@ -47,6 +76,7 @@ namespace RestoreMonarchy.Teleportation
 
         protected override void Unload()
         {
+            R.Commands.OnExecuteCommand -= OnExecuteCommand;
             U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             DamageTool.playerDamaged -= OnPlayerDamaged;
             BarricadeManager.onDamageBarricadeRequested -= OnBuildingDamaged;
@@ -86,7 +116,7 @@ namespace RestoreMonarchy.Teleportation
             { "RaidExpire", "Raid mode expired" },
             { "TPAHelp", "Use: /tpa <player/accept/deny/cancel>" },
             { "TPACooldown", "You have to wait {0} before you can send request again" },
-            { "TPADuplicate", "You already sent a teleportation request to that player" },            
+            { "TPADuplicate", "You already sent a teleportation request to that player" },
             { "TPASent", "Successfully sent TPA request to {0}" },
             { "TPAReceive", "You received TPA request from {0}" },
             { "TPANoRequest", "There is no TPA requests to you" },
@@ -100,7 +130,11 @@ namespace RestoreMonarchy.Teleportation
             { "TPACanceled", "Successfully canceled TPA request to {0}" },
             { "TPADenied", "Successfully denied TPA request from {0}" },
             { "TPASuccess", "You have been teleported to {0}" },
-            { "TPAYourself", "You cannot send TPA request to yourself" }
+            { "TPAYourself", "You cannot send TPA request to yourself" },
+            { "CommandWhileCombat", "You cannot use commands while in combat mode" },
+            { "CommandWhileRaid", "You cannot use commands while in raid mode" },
+            { "CommandWhileCave", "You cannot use commands while in cave" },
+            { "CancelMove", "Your teleportation was canceled, because {0} or {1} moved" }
         };
     }
 }

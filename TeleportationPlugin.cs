@@ -11,6 +11,7 @@ using RestoreMonarchy.Teleportation.Models;
 using RestoreMonarchy.Teleportation.Utils;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
+using Rocket.Unturned;
 
 namespace RestoreMonarchy.Teleportation
 {
@@ -31,15 +32,22 @@ namespace RestoreMonarchy.Teleportation
             CombatPlayers = new Dictionary<ulong, Timer>();
             RaidPlayers = new Dictionary<ulong, Timer>();
             Cooldowns = new Dictionary<CSteamID, DateTime>();
-            
+
+            U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
             DamageTool.playerDamaged += OnPlayerDamaged;
             BarricadeManager.onDamageBarricadeRequested += OnBuildingDamaged;
             StructureManager.onDamageStructureRequested += OnBuildingDamaged;
             Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
         }
 
+        private void OnPlayerDisconnected(UnturnedPlayer player)
+        {
+            this.ClearPlayerRequests(player.CSteamID);
+        }
+
         protected override void Unload()
         {
+            U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             DamageTool.playerDamaged -= OnPlayerDamaged;
             BarricadeManager.onDamageBarricadeRequested -= OnBuildingDamaged;
             StructureManager.onDamageStructureRequested -= OnBuildingDamaged;

@@ -134,7 +134,8 @@ namespace RestoreMonarchy.Teleportation
             { "CommandWhileCombat", "You cannot use commands while in combat mode" },
             { "CommandWhileRaid", "You cannot use commands while in raid mode" },
             { "CommandWhileCave", "You cannot use commands while in cave" },
-            { "CancelMove", "Your teleportation was canceled, because {0} or {1} moved" }
+            { "CancelMove", "Your teleportation was canceled, because {0} or {1} moved" },
+            { "CancelDisconnect", "Your teleportation was canceled, because {0} or {1} disconnected" }
         };
     }
 }

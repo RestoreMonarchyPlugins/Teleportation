@@ -22,6 +22,13 @@ namespace RestoreMonarchy.Teleportation.Models
         {
             foreach (var pair in dict)
             {
+                if (pair.Key.Position == null)
+                {
+                    teleport.Cancel(pluginInstance.Translate("CancelDisconnect", dict.Keys.Select(x => x.DisplayName).ToArray()));
+                    Destroy(this);
+                    return;
+                }
+
                 if (pair.Value != pair.Key.Position)
                 {
                     teleport.Cancel(pluginInstance.Translate("CancelMove", dict.Keys.Select(x => x.DisplayName).ToArray()));

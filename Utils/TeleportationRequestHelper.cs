@@ -83,13 +83,7 @@ namespace RestoreMonarchy.Teleportation.Utils
 
         public static void ClearPlayerRequests(this TeleportationPlugin plugin, CSteamID steamID)
         {
-            foreach (var request in plugin.TPRequests)
-            {
-                if (request.Sender == steamID || request.Target == steamID)
-                {
-                    plugin.TPRequests.Remove(request);
-                }
-            }
+            plugin.TPRequests.RemoveAll(x => x.Sender == steamID || x.Target == steamID);
         }
     }
 }

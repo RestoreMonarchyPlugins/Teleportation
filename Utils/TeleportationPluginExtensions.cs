@@ -1,4 +1,5 @@
-﻿using Rocket.Unturned.Chat;
+﻿using Rocket.Core.Utils;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
@@ -26,7 +27,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    UnturnedChat.Say(steamID, plugin.Translate("CombatExpire"), plugin.MessageColor);
+                    TaskDispatcher.QueueOnMainThread(() => UnturnedChat.Say(steamID, plugin.Translate("CombatExpire"), plugin.MessageColor));
                 };
                 timer.Start();
 
@@ -52,7 +53,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    UnturnedChat.Say(steamID, plugin.Translate("RaidExpire"), plugin.MessageColor);
+                    TaskDispatcher.QueueOnMainThread(() => UnturnedChat.Say(steamID, plugin.Translate("RaidExpire"), plugin.MessageColor));                    
                 };
                 timer.Start();
 

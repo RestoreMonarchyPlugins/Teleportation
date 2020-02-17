@@ -47,6 +47,15 @@ namespace RestoreMonarchy.Teleportation
 
         protected override void Unload()
         {
+            foreach (var combatPlayer in CombatPlayers)
+                combatPlayer.Value.Dispose();
+            foreach (var raidPlayer in RaidPlayers)
+                raidPlayer.Value.Dispose();
+
+            TPRequests = null;
+            CombatPlayers = null;
+            RaidPlayers = null;
+            Cooldowns = null;
             U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             DamageTool.playerDamaged -= OnPlayerDamaged;
             BarricadeManager.onDamageBarricadeRequested -= OnBuildingDamaged;

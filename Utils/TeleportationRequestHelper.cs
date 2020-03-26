@@ -49,7 +49,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 return;
             }
 
-            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", UnturnedPlayer.FromCSteamID(request.Target).DisplayName), plugin.MessageColor);
+            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", UnturnedPlayer.FromCSteamID(request.Sender).CharacterName, plugin.MessageColor));
             request.Execute(plugin.Configuration.Instance.TPADelay);
             plugin.TPRequests.Remove(request);
         }

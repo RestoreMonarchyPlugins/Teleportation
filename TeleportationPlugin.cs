@@ -12,6 +12,7 @@ using RestoreMonarchy.Teleportation.Utils;
 using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 using Rocket.Unturned;
+using Rocket.Unturned.Events;
 
 namespace RestoreMonarchy.Teleportation
 {
@@ -35,6 +36,7 @@ namespace RestoreMonarchy.Teleportation
 
             U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
             DamageTool.playerDamaged += OnPlayerDamaged;
+            UnturnedPlayerEvents.OnPlayerDeath += OnPlayerDeath;
             BarricadeManager.onDamageBarricadeRequested += OnBuildingDamaged;
             StructureManager.onDamageStructureRequested += OnBuildingDamaged;
             Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
@@ -58,6 +60,7 @@ namespace RestoreMonarchy.Teleportation
             Cooldowns = null;
             U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             DamageTool.playerDamaged -= OnPlayerDamaged;
+            UnturnedPlayerEvents.OnPlayerDeath -= OnPlayerDeath;
             BarricadeManager.onDamageBarricadeRequested -= OnBuildingDamaged;
             StructureManager.onDamageStructureRequested -= OnBuildingDamaged;
             Logger.Log($"{Name} has been unloaded!", ConsoleColor.Yellow);
@@ -72,7 +75,7 @@ namespace RestoreMonarchy.Teleportation
 
                 if (player != null)
                     this.StartPlayerRaid(instigatorSteamID);
-            }                         
+            }
         }
 
         private void OnPlayerDamaged(Player player, ref EDeathCause cause, ref ELimb limb, ref CSteamID killer, ref Vector3 direction, ref float damage, ref float times, ref bool canDamage)
@@ -86,6 +89,15 @@ namespace RestoreMonarchy.Teleportation
             }
         }
 
+        private void OnPlayerDeath(UnturnedPlayer player, EDeathCause cause, ELimb limb, CSteamID murderer)
+        {
+            if (CombatPlayers.TryGetValue(player.CSteamID.m_SteamID, out Timer timer) && timer.Enabled)
+            {
+                timer.Stop();
+                CombatPlayers.Remove(player.CSteamID.m_SteamID);
+            }
+        }
+
         public override TranslationList DefaultTranslations => new TranslationList()
         {
             { "TargetNotFound", "Failed to find a target" },
@@ -95,7 +107,7 @@ namespace RestoreMonarchy.Teleportation
             { "RaidExpire", "Raid mode expired" },
             { "TPAHelp", "Use: /tpa <player/accept/deny/cancel>" },
             { "TPACooldown", "You have to wait {0} before you can send request again" },
-            { "TPADuplicate", "You already sent a teleportation request to that player" },            
+            { "TPADuplicate", "You already sent a teleportation request to that player" },
             { "TPASent", "Successfully sent TPA request to {0}" },
             { "TPAReceive", "You received TPA request from {0}" },
             { "TPANoRequest", "There is no TPA requests to you" },

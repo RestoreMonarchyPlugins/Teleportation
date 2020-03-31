@@ -93,7 +93,7 @@ namespace RestoreMonarchy.Teleportation
         {
             if (CombatPlayers.TryGetValue(player.CSteamID.m_SteamID, out Timer timer) && timer.Enabled)
             {
-                timer.Stop();
+                timer.Dispose();
                 CombatPlayers.Remove(player.CSteamID.m_SteamID);
             }
         }

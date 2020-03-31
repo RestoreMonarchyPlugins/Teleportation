@@ -73,7 +73,7 @@ namespace RestoreMonarchy.Teleportation
             {
                 var player = UnturnedPlayer.FromSteamPlayer(steamPlayer);
 
-                if (player != null)
+                if (player != null && !Configuration.Instance.AllowRaid)
                     this.StartPlayerRaid(instigatorSteamID);
             }
         }
@@ -82,7 +82,7 @@ namespace RestoreMonarchy.Teleportation
         {
             var killerPlayer = PlayerTool.getSteamPlayer(killer);
 
-            if (killerPlayer != null)
+            if (killerPlayer != null && !Configuration.Instance.AllowCombat)
             {
                 this.StartPlayerCombat(killer);
                 this.StartPlayerCombat(player.channel.owner.playerID.steamID);

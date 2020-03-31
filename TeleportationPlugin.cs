@@ -121,7 +121,8 @@ namespace RestoreMonarchy.Teleportation
             { "TPACanceled", "Successfully canceled TPA request to {0}" },
             { "TPADenied", "Successfully denied TPA request from {0}" },
             { "TPASuccess", "You have been teleported to {0}" },
-            { "TPAYourself", "You cannot send TPA request to yourself" }
+            { "TPAYourself", "You cannot send TPA request to yourself" },
+            { "TPAVehicle", "Teleportation canceled because you or {0} is in vehicle" }
         };
     }
 }

@@ -57,6 +57,11 @@ namespace RestoreMonarchy.Teleportation.Models
                 {
                     UnturnedChat.Say(Sender, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);
                     UnturnedChat.Say(Target, plugin.Translate("TPACave", target.DisplayName), plugin.MessageColor);
+                } else if (sender.IsInVehicle || target.IsInVehicle)
+                {
+                    UnturnedChat.Say(Sender, plugin.Translate("TPAVehicle", target.DisplayName), plugin.MessageColor);
+                    UnturnedChat.Say(Target, plugin.Translate("TPAVehicle", sender.DisplayName), plugin.MessageColor);
+                    return;
                 }
                 else
                 {

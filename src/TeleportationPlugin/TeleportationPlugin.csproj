@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net461</TargetFramework>
+    <AssemblyName>TeleportationPlugin</AssemblyName>
+    <RootNamespace>RestoreMonarchy.TeleportationPlugin</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="config.yaml" />
+    <None Remove="translations.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="config.yaml" />
+    <EmbeddedResource Include="translations.yaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="OpenMod.Core" Version="0.9.26" />
+    <PackageReference Include="OpenMod.Unturned" Version="0.9.26" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,8 @@
+MessageColor: gray,
+TPACooldown: 90,
+TPADelay: 3,
+AllowCave: false,
+AllowRaid: false,
+RaidDuration: 30,
+AllowCombat: false,
+CombatDuration: 20

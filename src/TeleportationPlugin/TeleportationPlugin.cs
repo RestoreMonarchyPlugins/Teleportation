@@ -3,9 +3,9 @@ using OpenMod.Core.Plugins;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Configuration;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 [assembly: PluginMetadata("TeleportationPlugin", Author = "MCrow", DisplayName = "Teleportation")]
-
 namespace RestoreMonarchy.TeleportationPlugin
 {
     public class TeleportationPlugin : OpenModUniversalPlugin
@@ -21,12 +21,15 @@ namespace RestoreMonarchy.TeleportationPlugin
             this.configuration = configuration;
         }
 
-        protected override Task OnLoadAsync()
+        public Dictionary<string, DateTime> Cooldowns { get; private set; }
+
+        protected override async Task OnLoadAsync()
         {
+            Cooldowns = new Dictionary<string, DateTime>();
 
         }
 
-        protected override Task OnUnloadAsync()
+        protected override async Task OnUnloadAsync()
         {
 
         }

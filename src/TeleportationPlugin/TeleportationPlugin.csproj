@@ -16,8 +16,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="OpenMod.API" Version="0.9.26" />
     <PackageReference Include="OpenMod.Core" Version="0.9.26" />
-    <PackageReference Include="OpenMod.Unturned" Version="0.9.26" />
   </ItemGroup>
 
 </Project>

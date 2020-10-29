@@ -34,8 +34,13 @@ namespace RestoreMonarchy.Teleportation.Utils
                 return;
             }
 
-            plugin.TPRequests.Add(new TPARequest(sender.CSteamID, target.CSteamID));
+            var request = new TPARequest(sender.CSteamID, target.CSteamID);
+            if (!request.Validate())
+                return;
+
+            plugin.TPRequests.Add(request);
             plugin.Cooldowns[sender.CSteamID] = DateTime.Now;
+
             UnturnedChat.Say(sender, plugin.Translate("TPASent", target.DisplayName), plugin.MessageColor);
             UnturnedChat.Say(target, plugin.Translate("TPAReceive", sender.DisplayName), plugin.MessageColor);
         }
@@ -49,7 +54,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 return;
             }
 
-            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", UnturnedPlayer.FromCSteamID(request.Sender).CharacterName, plugin.MessageColor));
+            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", request.SenderPlayer.CharacterName, plugin.MessageColor));
             request.Execute(plugin.Configuration.Instance.TPADelay);
             plugin.TPRequests.Remove(request);
         }
@@ -59,7 +64,7 @@ namespace RestoreMonarchy.Teleportation.Utils
             var request = plugin.TPRequests.FirstOrDefault(x => x.Sender == caller.CSteamID);
             if (request != null)
             {
-                UnturnedChat.Say(caller, plugin.Translate("TPACanceled", UnturnedPlayer.FromCSteamID(request.Target).DisplayName), plugin.MessageColor);
+                UnturnedChat.Say(caller, plugin.Translate("TPACanceled", request.TargetPlayer.DisplayName), plugin.MessageColor);
                 plugin.TPRequests.Remove(request);
             } else
             {
@@ -72,7 +77,7 @@ namespace RestoreMonarchy.Teleportation.Utils
             var request = plugin.TPRequests.FirstOrDefault(x => x.Target == caller.CSteamID);
             if (request != null)
             {
-                UnturnedChat.Say(caller, plugin.Translate("TPADenied", UnturnedPlayer.FromCSteamID(request.Sender).DisplayName), plugin.MessageColor);
+                UnturnedChat.Say(caller, plugin.Translate("TPADenied", request.SenderPlayer.DisplayName), plugin.MessageColor);
                 plugin.TPRequests.Remove(request);
             }
             else

@@ -3,6 +3,7 @@ using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
+using System.Linq;
 using System.Timers;
 
 namespace RestoreMonarchy.Teleportation.Utils
@@ -11,23 +12,19 @@ namespace RestoreMonarchy.Teleportation.Utils
     {
         public static void StartPlayerCombat(this TeleportationPlugin plugin, CSteamID steamID)
         {
-            if (plugin.CombatPlayers.TryGetValue(steamID.m_SteamID, out Timer timer))
+            if (plugin.CombatPlayers.TryGetValue(steamID, out Timer timer))
             {
-                if (timer.Enabled)
-                    timer.Enabled = false;
-                else
-                    UnturnedChat.Say(steamID, plugin.Translate("CombatStart"), plugin.MessageColor);
-
+                timer.Enabled = false;
                 timer.Start();
             }
             else
             {
                 timer = new Timer(plugin.Configuration.Instance.CombatDuration * 1000);
-                plugin.CombatPlayers.Add(steamID.m_SteamID, timer);
+                plugin.CombatPlayers.Add(steamID, timer);
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    TaskDispatcher.QueueOnMainThread(() => UnturnedChat.Say(steamID, plugin.Translate("CombatExpire"), plugin.MessageColor));
+                    TaskDispatcher.QueueOnMainThread(() => plugin.StopPlayerCombat(steamID));
                 };
                 timer.Start();
 
@@ -35,25 +32,33 @@ namespace RestoreMonarchy.Teleportation.Utils
             }
         }
 
+        public static void StopPlayerCombat(this TeleportationPlugin plugin, CSteamID steamID)
+        {
+            if (plugin.CombatPlayers.TryGetValue(steamID, out Timer timer))
+            {
+                timer.Dispose();
+                plugin.CombatPlayers.Remove(steamID);
+                UnturnedChat.Say(steamID, plugin.Translate("CombatExpire"), plugin.MessageColor);                
+            }
+        }
+
         public static void StartPlayerRaid(this TeleportationPlugin plugin, CSteamID steamID)
         {
-            if (plugin.RaidPlayers.TryGetValue(steamID.m_SteamID, out Timer timer))
+            if (plugin.RaidPlayers.TryGetValue(steamID, out Timer timer))
             {
                 if (timer.Enabled)
                     timer.Enabled = false;
-                else
-                    UnturnedChat.Say(steamID, plugin.Translate("RaidStart"), plugin.MessageColor);
 
                 timer.Start();
             }
             else
             {
                 timer = new Timer(plugin.Configuration.Instance.RaidDuration * 1000);
-                plugin.RaidPlayers.Add(steamID.m_SteamID, timer);
+                plugin.RaidPlayers.Add(steamID, timer);
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    TaskDispatcher.QueueOnMainThread(() => UnturnedChat.Say(steamID, plugin.Translate("RaidExpire"), plugin.MessageColor));                    
+                    TaskDispatcher.QueueOnMainThread(() => plugin.StopPlayerRaid(steamID));                    
                 };
                 timer.Start();
 
@@ -61,11 +66,21 @@ namespace RestoreMonarchy.Teleportation.Utils
             }
         }
 
+        public static void StopPlayerRaid(this TeleportationPlugin plugin, CSteamID steamID)
+        {
+            if (plugin.RaidPlayers.TryGetValue(steamID, out Timer timer))
+            {
+                timer.Dispose();
+                plugin.RaidPlayers.Remove(steamID);
+                UnturnedChat.Say(steamID, plugin.Translate("RaidExpire"), plugin.MessageColor);
+            }
+        }
+
         public static bool IsPlayerInRaid(this TeleportationPlugin plugin, CSteamID steamID)
         {
             if (!plugin.Configuration.Instance.AllowRaid)
             {
-                if (plugin.RaidPlayers.TryGetValue(steamID.m_SteamID, out Timer timer) && timer.Enabled)
+                if (plugin.RaidPlayers.TryGetValue(steamID, out Timer timer) && timer.Enabled)
                 {
                     return true;
                 }
@@ -77,7 +92,7 @@ namespace RestoreMonarchy.Teleportation.Utils
         {
             if (!plugin.Configuration.Instance.AllowCombat)
             {
-                if (plugin.CombatPlayers.TryGetValue(steamID.m_SteamID, out Timer timer) && timer.Enabled)
+                if (plugin.CombatPlayers.TryGetValue(steamID, out Timer timer) && timer.Enabled)
                 {
                     return true;
                 }

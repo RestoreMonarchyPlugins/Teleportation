@@ -13,6 +13,7 @@ using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 using Rocket.Unturned;
 using Rocket.Unturned.Events;
+using RestoreMonarchy.Teleportation.Components;
 
 namespace RestoreMonarchy.Teleportation
 {
@@ -25,6 +26,8 @@ namespace RestoreMonarchy.Teleportation
         public Dictionary<CSteamID, DateTime> Cooldowns { get; set; }
         public Color MessageColor { get; set; }
 
+        public MovementDetectorComponent MovementDetector { get; private set; }
+
         protected override void Load()
         {
             Instance = this;
@@ -34,6 +37,8 @@ namespace RestoreMonarchy.Teleportation
             RaidPlayers = new Dictionary<CSteamID, Timer>();
             Cooldowns = new Dictionary<CSteamID, DateTime>();
 
+            MovementDetector = gameObject.AddComponent<MovementDetectorComponent>();
+
             U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
             DamageTool.playerDamaged += OnPlayerDamaged;
             UnturnedPlayerEvents.OnPlayerDeath += OnPlayerDeath;
@@ -42,20 +47,14 @@ namespace RestoreMonarchy.Teleportation
             Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
         }
 
-        private void OnPlayerDisconnected(UnturnedPlayer player)
-        {
-            this.ClearPlayerRequests(player.CSteamID);
-            this.StopPlayerCombat(player.CSteamID);
-            this.StopPlayerRaid(player.CSteamID);
-            
-        }
-
         protected override void Unload()
         {
             foreach (var combatPlayer in CombatPlayers)
                 combatPlayer.Value.Dispose();
             foreach (var raidPlayer in RaidPlayers)
                 raidPlayer.Value.Dispose();
+
+            Destroy(MovementDetector);
 
             TPRequests = null;
             CombatPlayers = null;
@@ -67,6 +66,13 @@ namespace RestoreMonarchy.Teleportation
             BarricadeManager.onDamageBarricadeRequested -= OnBarricadeDamaged;
             StructureManager.onDamageStructureRequested -= OnStructureDamaged;
             Logger.Log($"{Name} has been unloaded!", ConsoleColor.Yellow);
+        }
+
+        private void OnPlayerDisconnected(UnturnedPlayer player)
+        {
+            this.ClearPlayerRequests(player.CSteamID);
+            this.StopPlayerCombat(player.CSteamID);
+            this.StopPlayerRaid(player.CSteamID);
         }
 
         private void OnStructureDamaged(CSteamID instigatorSteamID, Transform structureTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
@@ -160,7 +166,10 @@ namespace RestoreMonarchy.Teleportation
             { "TPASuccess", "You have been teleported to {0}" },
             { "TPAYourself", "You cannot send TPA request to yourself" },
             { "TPAVehicle", "Teleportation canceled because {0} is in vehicle" },
-            { "TPAVehicleYou", "Teleportation canceled because you are in vehicle" }
+            { "TPAVehicleYou", "Teleportation canceled because you are in vehicle" },
+            { "TPACanceledSenderMoved", "Teleportation canceled because {0} moved!" },
+            { "TPACanceledYouMoved", "Teleportation canceled because you moved!" },
+            { "TPARequestExpired", "Your teleportation request to {0} expired!" }
         };
     }
 }

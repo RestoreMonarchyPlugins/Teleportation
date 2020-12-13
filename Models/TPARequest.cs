@@ -16,29 +16,45 @@ namespace RestoreMonarchy.Teleportation.Models
 
         public TPARequest() { }
 
+        private TeleportationPlugin plugin => TeleportationPlugin.Instance;
+
         public CSteamID Sender { get; set; }
         public CSteamID Target { get; set; }
 
         public UnturnedPlayer SenderPlayer => UnturnedPlayer.FromCSteamID(Sender);
         public UnturnedPlayer TargetPlayer => UnturnedPlayer.FromCSteamID(Target);
-        
+
+        public bool IsCanceled { get; private set; }
+
 
         public void Execute(double delay)
-        {
-            var plugin = TeleportationPlugin.Instance;
-            
+        {            
             if (delay > 0)
             {
                 UnturnedChat.Say(Sender, plugin.Translate("TPADelay", TargetPlayer.DisplayName, delay), plugin.MessageColor);
+                if (plugin.Configuration.Instance.CancelTeleportWhenMove)
+                {
+                    plugin.MovementDetector.AddPlayer(SenderPlayer.Player, () =>
+                    {
+                        UnturnedChat.Say(Sender, plugin.Translate("CanceledYouMoved"), plugin.MessageColor);
+                        UnturnedChat.Say(Target, plugin.Translate("CanceledSenderMoved", SenderPlayer.DisplayName), plugin.MessageColor);
+                        Cancel();
+                    });
+                }               
             }
 
             TaskDispatcher.QueueOnMainThread(() =>
             {
+                if (IsCanceled)
+                    return;
+
+                plugin.MovementDetector.RemovePlayer(SenderPlayer.Player);
+
                 if (!Validate(true))
                 {
                     plugin.Cooldowns.Remove(Sender);
                     return;
-                }                    
+                }
 
                 SenderPlayer.Teleport(TargetPlayer);
                 UnturnedChat.Say(Sender, plugin.Translate("TPASuccess", TargetPlayer.DisplayName), plugin.MessageColor);
@@ -48,8 +64,6 @@ namespace RestoreMonarchy.Teleportation.Models
 
         public bool Validate(bool isFinal = false)
         {
-            var plugin = TeleportationPlugin.Instance;
-
             if (plugin.IsPlayerInCombat(SenderPlayer.CSteamID))
             {
                 UnturnedChat.Say(SenderPlayer, plugin.Translate("TPAWhileCombatYou"), plugin.MessageColor);
@@ -89,5 +103,9 @@ namespace RestoreMonarchy.Teleportation.Models
             return true;
         }
 
+        public void Cancel()
+        {
+            IsCanceled = true;
+        }
     }
 }

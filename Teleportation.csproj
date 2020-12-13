@@ -65,6 +65,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Commands\TPACommand.cs" />
+    <Compile Include="Components\MovementDetector.cs" />
     <Compile Include="Models\TPARequest.cs" />
     <Compile Include="TeleportationConfiguration.cs" />
     <Compile Include="TeleportationPlugin.cs" />

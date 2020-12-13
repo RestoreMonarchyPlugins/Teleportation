@@ -4,6 +4,7 @@ using System;
 using System.Linq;
 using RestoreMonarchy.Teleportation.Models;
 using Steamworks;
+using Rocket.Core.Utils;
 
 namespace RestoreMonarchy.Teleportation.Utils
 {
@@ -39,6 +40,14 @@ namespace RestoreMonarchy.Teleportation.Utils
                 return;
 
             plugin.TPRequests.Add(request);
+            TaskDispatcher.QueueOnMainThread(() => 
+            {
+                if (plugin.TPRequests.Contains(request))
+                {
+                    UnturnedChat.Say(request.Sender, plugin.Translate("TPARequestExpired", request.TargetPlayer.DisplayName), plugin.MessageColor);
+                    plugin.TPRequests.Remove(request);
+                }
+            }, plugin.Configuration.Instance.TPARequestExpire);
             plugin.Cooldowns[sender.CSteamID] = DateTime.Now;
 
             UnturnedChat.Say(sender, plugin.Translate("TPASent", target.DisplayName), plugin.MessageColor);

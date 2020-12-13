@@ -12,6 +12,9 @@ namespace RestoreMonarchy.Teleportation
         public double RaidDuration { get; set; }
         public bool AllowCombat { get; set; }
         public double CombatDuration { get; set; }
+        public bool CancelTeleportWhenMove { get; set; }
+        public float MaxMoveDistance { get; set; }
+        public float TPARequestExpire { get; set; }
 
         public void LoadDefaults()
         {
@@ -23,6 +26,9 @@ namespace RestoreMonarchy.Teleportation
             RaidDuration = 30;
             AllowCombat = false;
             CombatDuration = 20;
+            CancelTeleportWhenMove = true;
+            MaxMoveDistance = 0.5f;
+            TPARequestExpire = 30;
         }
     }
 }

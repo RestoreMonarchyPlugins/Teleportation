@@ -36,8 +36,8 @@ namespace RestoreMonarchy.Teleportation.Models
                 {
                     plugin.MovementDetector.AddPlayer(SenderPlayer.Player, () =>
                     {
-                        UnturnedChat.Say(Sender, plugin.Translate("CanceledYouMoved"), plugin.MessageColor);
-                        UnturnedChat.Say(Target, plugin.Translate("CanceledSenderMoved", SenderPlayer.DisplayName), plugin.MessageColor);
+                        UnturnedChat.Say(Sender, plugin.Translate("TPACanceledYouMoved"), plugin.MessageColor);
+                        UnturnedChat.Say(Target, plugin.Translate("TPACanceledSenderMoved", SenderPlayer.DisplayName), plugin.MessageColor);
                         Cancel();
                     });
                 }               

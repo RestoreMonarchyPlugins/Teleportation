@@ -35,20 +35,13 @@ namespace RestoreMonarchy.Teleportation
             Cooldowns = new Dictionary<CSteamID, DateTime>();
 
             U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
-            DamageTool.playerDamaged += OnPlayerDamaged;
+            DamageTool.damagePlayerRequested += DamagePlayerRequested;
             UnturnedPlayerEvents.OnPlayerDeath += OnPlayerDeath;
             BarricadeManager.onDamageBarricadeRequested += OnBarricadeDamaged;
             StructureManager.onDamageStructureRequested += OnStructureDamaged;
-            Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
-        }
 
-        private void OnPlayerDisconnected(UnturnedPlayer player)
-        {
-            this.ClearPlayerRequests(player.CSteamID);
-            this.StopPlayerCombat(player.CSteamID);
-            this.StopPlayerRaid(player.CSteamID);
-            
-        }
+            Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
+        }       
 
         protected override void Unload()
         {
@@ -60,13 +53,32 @@ namespace RestoreMonarchy.Teleportation
             TPRequests = null;
             CombatPlayers = null;
             RaidPlayers = null;
-            Cooldowns = null; 
+            Cooldowns = null;
+
             U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
-            DamageTool.playerDamaged -= OnPlayerDamaged;
+            DamageTool.damagePlayerRequested -= DamagePlayerRequested;
             UnturnedPlayerEvents.OnPlayerDeath -= OnPlayerDeath;
             BarricadeManager.onDamageBarricadeRequested -= OnBarricadeDamaged;
             StructureManager.onDamageStructureRequested -= OnStructureDamaged;
+
             Logger.Log($"{Name} has been unloaded!", ConsoleColor.Yellow);
+        }
+
+        private void OnPlayerDisconnected(UnturnedPlayer player)
+        {
+            this.ClearPlayerRequests(player.CSteamID);
+            this.StopPlayerCombat(player.CSteamID);
+            this.StopPlayerRaid(player.CSteamID);
+        }
+
+        private void DamagePlayerRequested(ref DamagePlayerParameters parameters, ref bool shouldAllow)
+        {
+            var killerPlayer = PlayerTool.getPlayer(parameters.killer);
+            if (!parameters.player.life.isDead && killerPlayer != null && killerPlayer != parameters.player && !Configuration.Instance.AllowCombat)
+            {
+                this.StartPlayerCombat(parameters.killer);
+                this.StartPlayerCombat(parameters.player.channel.owner.playerID.steamID);
+            }
         }
 
         private void OnStructureDamaged(CSteamID instigatorSteamID, Transform structureTransform, ref ushort pendingTotalDamage, ref bool shouldAllow, EDamageOrigin damageOrigin)
@@ -114,16 +126,6 @@ namespace RestoreMonarchy.Teleportation
 
                     this.StartPlayerRaid(instigatorSteamID);
                 }
-            }
-        }
-
-        private void OnPlayerDamaged(Player player, ref EDeathCause cause, ref ELimb limb, ref CSteamID killer, ref Vector3 direction, ref float damage, ref float times, ref bool canDamage)
-        {
-            var killerPlayer = PlayerTool.getPlayer(killer);
-            if (!player.life.isDead && killerPlayer != null && killerPlayer != player && !Configuration.Instance.AllowCombat)
-            {
-                this.StartPlayerCombat(killer);
-                this.StartPlayerCombat(player.channel.owner.playerID.steamID);
             }
         }
 

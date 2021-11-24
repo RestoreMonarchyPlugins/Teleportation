@@ -38,9 +38,16 @@ namespace RestoreMonarchy.Teleportation.Models
                 {
                     plugin.Cooldowns.Remove(Sender);
                     return;
-                }                    
+                }
 
-                SenderPlayer.Teleport(TargetPlayer);
+                if (plugin.Configuration.Instance.UseUnsafeTeleport)
+                {
+                    SenderPlayer.Player.teleportToLocationUnsafe(TargetPlayer.Position, TargetPlayer.Rotation);
+                } else
+                {
+                    SenderPlayer.Teleport(TargetPlayer);    
+                }                
+                
                 UnturnedChat.Say(Sender, plugin.Translate("TPASuccess", TargetPlayer.DisplayName), plugin.MessageColor);
 
             }, (float)delay);

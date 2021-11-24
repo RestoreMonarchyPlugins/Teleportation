@@ -12,6 +12,7 @@ namespace RestoreMonarchy.Teleportation
         public double RaidDuration { get; set; }
         public bool AllowCombat { get; set; }
         public double CombatDuration { get; set; }
+        public bool UseUnsafeTeleport { get; set; }
 
         public void LoadDefaults()
         {
@@ -23,6 +24,7 @@ namespace RestoreMonarchy.Teleportation
             RaidDuration = 30;
             AllowCombat = false;
             CombatDuration = 20;
+            UseUnsafeTeleport = false;
         }
     }
 }

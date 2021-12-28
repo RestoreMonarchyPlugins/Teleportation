@@ -86,22 +86,21 @@ namespace RestoreMonarchy.Teleportation
             SteamPlayer steamPlayer;
             if (!Configuration.Instance.AllowRaid && (steamPlayer = PlayerTool.getSteamPlayer(instigatorSteamID)) != null)
             {
-                if (StructureManager.tryGetInfo(structureTransform, out _, out _, out ushort index, out StructureRegion region))
+                StructureDrop drop = StructureManager.FindStructureByRootTransform(structureTransform);
+                StructureData data = drop.GetServersideData();
+                // return if structure owner is instigator
+                if (data.owner == instigatorSteamID.m_SteamID || data.group == steamPlayer.player.quests.groupID.m_SteamID)
                 {
-                    // return if structure owner is instigator
-                    if (region.structures[index].owner == instigatorSteamID.m_SteamID || region.structures[index].group == steamPlayer.player.quests.groupID.m_SteamID)
-                    {
-                        return;
-                    }
-
-                    // return if structure owner is offline
-                    if (!Provider.clients.Exists(x => x.playerID.steamID.m_SteamID == region.structures[index].owner || x.player.quests.groupID.m_SteamID == region.structures[index].group))
-                    {
-                        return;
-                    }
-                    
-                    this.StartPlayerRaid(instigatorSteamID);
+                    return;
                 }
+
+                // return if structure owner is offline
+                if (!Provider.clients.Exists(x => x.playerID.steamID.m_SteamID == data.owner || x.player.quests.groupID.m_SteamID == data.group))
+                {
+                    return;
+                }
+
+                this.StartPlayerRaid(instigatorSteamID);
             }
         }
 
@@ -110,22 +109,21 @@ namespace RestoreMonarchy.Teleportation
             SteamPlayer steamPlayer;
             if (!Configuration.Instance.AllowRaid && (steamPlayer = PlayerTool.getSteamPlayer(instigatorSteamID)) != null)
             {
-                if (BarricadeManager.tryGetInfo(barricadeTransform, out _, out _, out _, out ushort index, out BarricadeRegion region))
+                BarricadeDrop drop = BarricadeManager.FindBarricadeByRootTransform(barricadeTransform);
+                BarricadeData data = drop.GetServersideData();
+                // return if barricade owner is instigator
+                if (data.owner == instigatorSteamID.m_SteamID || data.group == steamPlayer.player.quests.groupID.m_SteamID)
                 {
-                    // return if barricade owner is instigator
-                    if (region.barricades[index].owner == instigatorSteamID.m_SteamID || region.barricades[index].group == steamPlayer.player.quests.groupID.m_SteamID)
-                    {
-                        return;
-                    }
-
-                    // return if barricade owner is offline
-                    if (!Provider.clients.Exists(x => x.playerID.steamID.m_SteamID == region.barricades[index].owner || x.player.quests.groupID.m_SteamID == region.barricades[index].group))
-                    {
-                        return;
-                    }
-
-                    this.StartPlayerRaid(instigatorSteamID);
+                    return;
                 }
+
+                // return if barricade owner is offline
+                if (!Provider.clients.Exists(x => x.playerID.steamID.m_SteamID == data.owner || x.player.quests.groupID.m_SteamID == data.group))
+                {
+                    return;
+                }
+
+                this.StartPlayerRaid(instigatorSteamID);
             }
         }
 

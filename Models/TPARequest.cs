@@ -3,30 +3,40 @@ using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using Steamworks;
 using RestoreMonarchy.Teleportation.Utils;
+using System;
 
 namespace RestoreMonarchy.Teleportation.Models
 {
     public class TPARequest
     {
+        private TeleportationPlugin plugin => TeleportationPlugin.Instance;
+
         public TPARequest(CSteamID sender, CSteamID target)
         {
             Sender = sender;
             Target = target;
+
+            double duration = plugin.Configuration.Instance.TPADuration;
+            if (duration == 0)
+            {
+                duration = 30;
+            }
+            ExpireDate = DateTime.Now.AddSeconds(duration);
         }
 
         public TPARequest() { }
 
         public CSteamID Sender { get; set; }
         public CSteamID Target { get; set; }
+        public DateTime ExpireDate { get; set; }
 
         public UnturnedPlayer SenderPlayer => UnturnedPlayer.FromCSteamID(Sender);
         public UnturnedPlayer TargetPlayer => UnturnedPlayer.FromCSteamID(Target);
-        
+
+        public bool IsExpired => ExpireDate < DateTime.Now;
 
         public void Execute(double delay)
-        {
-            var plugin = TeleportationPlugin.Instance;
-            
+        {            
             if (delay > 0)
             {
                 UnturnedChat.Say(Sender, plugin.Translate("TPADelay", TargetPlayer.DisplayName, delay), plugin.MessageColor);

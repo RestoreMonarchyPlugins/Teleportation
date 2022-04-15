@@ -47,6 +47,9 @@ namespace RestoreMonarchy.Teleportation.Utils
 
         public static void AcceptTPARequest(this TeleportationPlugin plugin, UnturnedPlayer caller)
         {
+            // Remove all expired TP requests
+            plugin.TPRequests.RemoveAll(x => x.IsExpired);
+
             var request = plugin.TPRequests.FirstOrDefault(x => x.Target == caller.CSteamID);
             if (request == null)
             {

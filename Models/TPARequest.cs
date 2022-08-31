@@ -29,6 +29,7 @@ namespace RestoreMonarchy.Teleportation.Models
         public CSteamID Sender { get; set; }
         public CSteamID Target { get; set; }
         public DateTime ExpireDate { get; set; }
+        public bool IsCanceled { get; private set; }
 
         public UnturnedPlayer SenderPlayer => UnturnedPlayer.FromCSteamID(Sender);
         public UnturnedPlayer TargetPlayer => UnturnedPlayer.FromCSteamID(Target);
@@ -40,10 +41,24 @@ namespace RestoreMonarchy.Teleportation.Models
             if (delay > 0)
             {
                 UnturnedChat.Say(Sender, plugin.Translate("TPADelay", TargetPlayer.DisplayName, delay), plugin.MessageColor);
+                if (plugin.Configuration.Instance.CancelOnMove)
+                {
+                    plugin.MovementDetector.AddPlayer(SenderPlayer.Player, () =>
+                    {
+                        UnturnedChat.Say(Sender, plugin.Translate("TPACanceledYouMoved"), plugin.MessageColor);
+                        UnturnedChat.Say(Target, plugin.Translate("TPACanceledSenderMoved", SenderPlayer.DisplayName), plugin.MessageColor);
+                        Cancel();
+                    });
+                }
             }
 
             TaskDispatcher.QueueOnMainThread(() =>
             {
+                if (IsCanceled)
+                    return;
+
+                plugin.MovementDetector.RemovePlayer(SenderPlayer.Player);
+
                 if (!Validate(true))
                 {
                     plugin.Cooldowns.Remove(Sender);
@@ -106,5 +121,9 @@ namespace RestoreMonarchy.Teleportation.Models
             return true;
         }
 
+        public void Cancel()
+        {
+            IsCanceled = true;
+        }
     }
 }

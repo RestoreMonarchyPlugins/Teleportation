@@ -14,6 +14,8 @@ namespace RestoreMonarchy.Teleportation
         public bool AllowCombat { get; set; }
         public double CombatDuration { get; set; }
         public bool UseUnsafeTeleport { get; set; }
+        public bool CancelOnMove { get; set; }
+        public float MoveMaxDistance { get; set; }
 
         public void LoadDefaults()
         {
@@ -27,6 +29,7 @@ namespace RestoreMonarchy.Teleportation
             AllowCombat = false;
             CombatDuration = 20;
             UseUnsafeTeleport = false;
+            CancelOnMove = true;
         }
     }
 }

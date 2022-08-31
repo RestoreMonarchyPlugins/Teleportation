@@ -13,6 +13,7 @@ using UnityEngine;
 using Logger = Rocket.Core.Logging.Logger;
 using Rocket.Unturned;
 using Rocket.Unturned.Events;
+using RestoreMonarchy.Teleportation.Components;
 
 namespace RestoreMonarchy.Teleportation
 {
@@ -25,6 +26,8 @@ namespace RestoreMonarchy.Teleportation
         public Dictionary<CSteamID, DateTime> Cooldowns { get; set; }
         public Color MessageColor { get; set; }
 
+        public MovementDetectorComponent MovementDetector { get; set; }
+
         protected override void Load()
         {
             Instance = this;
@@ -33,6 +36,8 @@ namespace RestoreMonarchy.Teleportation
             CombatPlayers = new Dictionary<CSteamID, Timer>();
             RaidPlayers = new Dictionary<CSteamID, Timer>();
             Cooldowns = new Dictionary<CSteamID, DateTime>();
+
+            MovementDetector = gameObject.AddComponent<MovementDetectorComponent>();
 
             U.Events.OnPlayerDisconnected += OnPlayerDisconnected;
             DamageTool.damagePlayerRequested += DamagePlayerRequested;
@@ -54,6 +59,8 @@ namespace RestoreMonarchy.Teleportation
             CombatPlayers = null;
             RaidPlayers = null;
             Cooldowns = null;
+
+            Destroy(MovementDetector);
 
             U.Events.OnPlayerDisconnected -= OnPlayerDisconnected;
             DamageTool.damagePlayerRequested -= DamagePlayerRequested;
@@ -160,7 +167,9 @@ namespace RestoreMonarchy.Teleportation
             { "TPASuccess", "You have been teleported to {0}" },
             { "TPAYourself", "You cannot send TPA request to yourself" },
             { "TPAVehicle", "Teleportation canceled because {0} is in vehicle" },
-            { "TPAVehicleYou", "Teleportation canceled because you are in vehicle" }
+            { "TPAVehicleYou", "Teleportation canceled because you are in vehicle" },
+            { "TPACanceledSenderMoved", "Teleportation canceled because {0} moved!" },
+            { "TPACanceledYouMoved", "Teleportation canceled because you moved!" },
         };
     }
 }

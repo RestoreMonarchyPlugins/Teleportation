@@ -1,0 +1,41 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net461</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<RootNamespace>RestoreMonarchy.Teleportation</RootNamespace>
+		<AssemblyVersion>1.7.0</AssemblyVersion>
+		<FileVersion>1.7.0</FileVersion>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <Reference Include="Assembly-CSharp">
+	    <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+	  </Reference>
+	  <Reference Include="com.rlabrecque.steamworks.net">
+	    <HintPath>..\lib\com.rlabrecque.steamworks.net.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Newtonsoft.Json">
+	    <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Rocket.API">
+	    <HintPath>..\lib\Rocket.API.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Rocket.Core">
+	    <HintPath>..\lib\Rocket.Core.dll</HintPath>
+	  </Reference>
+	  <Reference Include="Rocket.Unturned">
+	    <HintPath>..\lib\Rocket.Unturned.dll</HintPath>
+	  </Reference>
+	  <Reference Include="SDG.NetTransport">
+	    <HintPath>..\lib\SDG.NetTransport.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine">
+	    <HintPath>..\lib\UnityEngine.dll</HintPath>
+	  </Reference>
+	  <Reference Include="UnityEngine.CoreModule">
+	    <HintPath>..\lib\UnityEngine.CoreModule.dll</HintPath>
+	  </Reference>
+	</ItemGroup>
+
+</Project>

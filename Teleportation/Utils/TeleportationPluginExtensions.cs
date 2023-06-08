@@ -3,8 +3,8 @@ using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using SDG.Unturned;
 using Steamworks;
-using System.Linq;
 using System.Timers;
+using UnityEngine;
 
 namespace RestoreMonarchy.Teleportation.Utils
 {
@@ -104,7 +104,9 @@ namespace RestoreMonarchy.Teleportation.Utils
         {
             if (!plugin.Configuration.Instance.AllowCave)
             {
-                if (LevelGround.checkSafe(player.Position) != player.Position)
+                Vector3 point = Vector3.zero;
+                UndergroundAllowlist.AdjustPosition(ref point, 0.5f, 1f);
+                if (point != player.Position)
                 {
                     return true;
                 }

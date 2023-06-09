@@ -62,7 +62,7 @@ namespace RestoreMonarchy.Teleportation.Utils
             UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", request.SenderPlayer.CharacterName), plugin.MessageColor);
 
             double delay = plugin.Configuration.Instance.TPADelay;
-            CSteamID groupID = caller.Player.quests.groupID;            
+            CSteamID groupID = request.SenderPlayer.Player.quests.groupID;            
             if (groupID != CSteamID.Nil)
             {
                 GroupInfo groupInfo = GroupManager.getGroupInfo(groupID);

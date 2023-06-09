@@ -139,6 +139,14 @@ namespace RestoreMonarchy.Teleportation
             this.StopPlayerCombat(player.CSteamID);
         }
 
+        public void LogDebug(string message)
+        {
+            if (Configuration.Instance.Debug)
+            {
+                Logger.Log($"Debug >> {message}", ConsoleColor.Gray);
+            }
+        }
+
         public override TranslationList DefaultTranslations => new TranslationList()
         {
             { "TargetNotFound", "Failed to find a target" },

@@ -104,9 +104,7 @@ namespace RestoreMonarchy.Teleportation.Utils
         {
             if (!plugin.Configuration.Instance.AllowCave)
             {
-                Vector3 point = Vector3.zero;
-                UndergroundAllowlist.AdjustPosition(ref point, 0.5f, 1f);
-                if (point != player.Position)
+                if (LevelGround.checkSafe(player.Position) != player.Position)
                 {
                     return true;
                 }

@@ -4,6 +4,8 @@ using System;
 using System.Linq;
 using RestoreMonarchy.Teleportation.Models;
 using Steamworks;
+using SDG.Unturned;
+using RestoreMonarchy.Teleportation.Models.Configs;
 
 namespace RestoreMonarchy.Teleportation.Utils
 {
@@ -57,8 +59,27 @@ namespace RestoreMonarchy.Teleportation.Utils
                 return;
             }
 
-            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", request.SenderPlayer.CharacterName, plugin.MessageColor));
-            request.Execute(plugin.Configuration.Instance.TPADelay);
+            UnturnedChat.Say(caller, plugin.Translate("TPAAccepted", request.SenderPlayer.CharacterName), plugin.MessageColor);
+
+            double delay = plugin.Configuration.Instance.TPADelay;
+            CSteamID groupID = caller.Player.quests.groupID;            
+            if (groupID != CSteamID.Nil)
+            {
+                GroupInfo groupInfo = GroupManager.getGroupInfo(groupID);
+
+                GroupTPADelay groupTPADelay = plugin.Configuration.Instance.GroupTPADelays
+                    .OrderBy(x => x.MaxMembers)
+                    .Where(x => x.MaxMembers <= groupInfo.members)
+                    .FirstOrDefault();
+
+                if (groupTPADelay != null)
+                {
+                    plugin.LogDebug($"Set TPA delay of player {request.SenderPlayer.CharacterName} to group delay of max {groupTPADelay.MaxMembers} members");
+                    delay = groupTPADelay.TPADelay;
+                }
+            }
+
+            request.Execute(delay);
             plugin.TPRequests.Remove(request);
         }
 

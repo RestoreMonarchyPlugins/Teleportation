@@ -69,7 +69,7 @@ namespace RestoreMonarchy.Teleportation.Utils
 
                 GroupTPADelay groupTPADelay = plugin.Configuration.Instance.GroupTPADelays
                     .OrderBy(x => x.MaxMembers)
-                    .Where(x => x.MaxMembers <= groupInfo.members)
+                    .Where(x => x.MaxMembers >= groupInfo.members)
                     .FirstOrDefault();
 
                 if (groupTPADelay != null)

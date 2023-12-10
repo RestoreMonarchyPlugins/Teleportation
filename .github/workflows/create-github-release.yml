@@ -1,0 +1,65 @@
+name: Create GitHub Release
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get version
+        id: package_version
+        uses: KageKirin/get-csproj-version@v0
+        with:
+          file: ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj
+          
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 6.x
+          
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --configuration Release --no-restore
+
+      - name: Install zip
+        run: sudo apt-get install zip
+
+      - name: Zip Rocket release artifacts
+        run: |
+          mkdir -p ./template/Plugins ./template/Libraries
+          mv ./${{ github.event.repository.name }}/bin/Release/net48/${{ github.event.repository.name }}.dll ./template/Plugins/
+          mv ./${{ github.event.repository.name }}/bin/Release/net48/*.dll ./template/Libraries/
+          cd ./template/
+          zip -qr ./../${{ github.event.repository.name }}-${{ github.event.inputs.version }}.zip *
+        shell: bash
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.event.inputs.version }}
+          release_name: "${{ github.event.repository.name }} v${{ github.event.inputs.version }}"
+          draft: true
+          prerelease: false
+      
+      - name: Upload Rocket release asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./${{ github.event.repository.name }}-${{ github.event.inputs.version }}.zip
+          asset_name: "/${{ github.event.repository.name }}-${{ github.event.inputs.version }}.zip"
+          asset_content_type: application/zip
+      

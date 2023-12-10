@@ -14,7 +14,7 @@ jobs:
         id: package_version
         uses: KageKirin/get-csproj-version@v0
         with:
-          file: ${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj
+          file: ./${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj
           
       - name: Checkout repository
         uses: actions/checkout@v4

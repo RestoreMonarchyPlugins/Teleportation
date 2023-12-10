@@ -10,14 +10,14 @@ jobs:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+    
       - name: Get version
         id: package_version
         uses: KageKirin/get-csproj-version@v0
         with:
           file: ./${{ github.event.repository.name }}/${{ github.event.repository.name }}.csproj
-          
-      - name: Checkout repository
-        uses: actions/checkout@v4
 
       - name: Setup .NET
         uses: actions/setup-dotnet@v3

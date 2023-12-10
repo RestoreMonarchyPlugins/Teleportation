@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net461</TargetFramework>
+		<TargetFramework>net48</TargetFramework>
 		<LangVersion>latest</LangVersion>
 		<RootNamespace>RestoreMonarchy.Teleportation</RootNamespace>
 		<AssemblyVersion>1.7.0</AssemblyVersion>

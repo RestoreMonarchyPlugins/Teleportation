@@ -39,7 +39,7 @@ jobs:
           mv ./${{ github.event.repository.name }}/bin/Release/net48/${{ github.event.repository.name }}.dll ./template/Plugins/
           mv ./${{ github.event.repository.name }}/bin/Release/net48/*.dll ./template/Libraries/
           cd ./template/
-          zip -qr ./../${{ github.event.repository.name }}-v${{ steps.teleportation.package_version.version }}.zip *
+          zip -qr ./../${{ github.event.repository.name }}-v${{ steps.test.package_version.version }}.zip *
         shell: bash
 
       - name: Create release
@@ -49,7 +49,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ steps.teleportation.package_version.version }}
-          release_name: "${{ github.event.repository.name }} v${{ steps.teleportation.package_version.version }}"
+          release_name: "${{ github.event.repository.name }} v${{ steps.test.package_version.version }}"
           draft: true
           prerelease: false
       
@@ -59,7 +59,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.event.repository.name }}-v${{ steps.teleportation.package_version.version }}.zip
-          asset_name: "/${{ github.event.repository.name }}-v${{ steps.teleportation.package_version.version }}.zip"
+          asset_path: ./${{ github.event.repository.name }}-v${{ steps.test.package_version.version }}.zip
+          asset_name: "/${{ github.event.repository.name }}-v${{ steps.test.package_version.version }}.zip"
           asset_content_type: application/zip
       

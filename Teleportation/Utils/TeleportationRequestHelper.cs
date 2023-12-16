@@ -1,9 +1,9 @@
-﻿using Rocket.Unturned.Chat;
+﻿using RestoreMonarchy.Teleportation.Models;
+using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
+using Steamworks;
 using System;
 using System.Linq;
-using RestoreMonarchy.Teleportation.Models;
-using Steamworks;
 
 namespace RestoreMonarchy.Teleportation.Utils
 {

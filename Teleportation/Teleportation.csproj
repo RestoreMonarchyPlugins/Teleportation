@@ -10,30 +10,39 @@
 	<ItemGroup>
 	  <Reference Include="Assembly-CSharp">
 	    <HintPath>..\lib\Assembly-CSharp.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="com.rlabrecque.steamworks.net">
 	    <HintPath>..\lib\com.rlabrecque.steamworks.net.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="Newtonsoft.Json">
 	    <HintPath>..\lib\Newtonsoft.Json.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="Rocket.API">
 	    <HintPath>..\lib\Rocket.API.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="Rocket.Core">
 	    <HintPath>..\lib\Rocket.Core.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="Rocket.Unturned">
 	    <HintPath>..\lib\Rocket.Unturned.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="SDG.NetTransport">
 	    <HintPath>..\lib\SDG.NetTransport.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="UnityEngine">
 	    <HintPath>..\lib\UnityEngine.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	  <Reference Include="UnityEngine.CoreModule">
 	    <HintPath>..\lib\UnityEngine.CoreModule.dll</HintPath>
+	    <Private>False</Private>
 	  </Reference>
 	</ItemGroup>
 

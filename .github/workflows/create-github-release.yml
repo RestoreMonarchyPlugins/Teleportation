@@ -5,7 +5,7 @@ on:
     branches:
       - master
     paths:
-      - ./${{ github.event.repository.name }}/**
+      - Teleportation/**
 
 jobs:
   build:

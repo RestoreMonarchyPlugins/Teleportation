@@ -39,7 +39,7 @@ jobs:
         run: |
           mkdir -p ./template/Plugins ./template/Libraries
           mv ./${{ github.event.repository.name }}/bin/Release/net48/${{ github.event.repository.name }}.dll ./template/Plugins/
-          mv ./${{ github.event.repository.name }}/bin/Release/net48/*.dll ./template/Libraries/
+          mv ./${{ github.event.repository.name }}/bin/Release/net48/*.dll* ./template/Libraries/
           cd ./template/
           zip -qr ./../${{ github.event.repository.name }}-v${{ steps.package_version.outputs.version }}.zip *
         shell: bash

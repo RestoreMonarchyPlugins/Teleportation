@@ -1,4 +1,4 @@
-[![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases) [![Discord](https://discordapp.com/api/guilds/520355060312440853/widget.png)](https://restoremonarchy.com/discord)
+[![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases)
 # Teleportation
 * Don't allow players to run away from combat or while raiding
 * Don't allow players to teleport while they are in cave or glitched underground
@@ -6,7 +6,6 @@
 * Plugin has it's own cooldown system
 * Allows you to set a delay before player is teleported after request is accepted
 * Set the color of messages sent by plugin!
-
 
 ## Commands
 * **/tpa \<player\>** - Sends a TPA request to the given player
@@ -16,18 +15,28 @@
 
 Alies: */tpa a, /tpa c, /tpa d*
 
+### Permissions
+The only permission this plugin has is `tpa` for all teleportation actions (send/deny/accept/cancel)
+```xml
+<Permission Cooldown="0">tpa</Permission>
+```
+
 ## Configuration
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <TeleportationConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <MessageColor>magenta</MessageColor>
-  <TPACooldown>90</TPACooldown>
-  <TPADelay>3</TPADelay>
+  <MessageColor>#ffff00</MessageColor>
+  <TPACooldown>15</TPACooldown>
+  <TPADelay>5</TPADelay>
+  <TPADuration>90</TPADuration>
   <AllowCave>false</AllowCave>
-  <AllowRaid>false</AllowRaid>
+  <AllowRaid>true</AllowRaid>
   <RaidDuration>30</RaidDuration>
-  <AllowCombat>false</AllowCombat>
+  <AllowCombat>true</AllowCombat>
   <CombatDuration>20</CombatDuration>
+  <UseUnsafeTeleport>false</UseUnsafeTeleport>
+  <CancelOnMove>true</CancelOnMove>
+  <MoveMaxDistance>0.5</MoveMaxDistance>
 </TeleportationConfiguration>
 ```
 ## Translation
@@ -47,14 +56,19 @@ Alies: */tpa a, /tpa c, /tpa d*
   <Translation Id="TPANoRequest" Value="There is no TPA requests to you" />
   <Translation Id="TPAAccepted" Value="Successfully accepted TPA request from {0}" />
   <Translation Id="TPADelay" Value="You will be teleported to {0} in {1} seconds" />
-  <Translation Id="TPAWhileCombat" Value="Teleportation canceled because you or {0} is in combat mode" />
-  <Translation Id="TPAWhileRaid" Value="Teleportation canceled because you or {0} is in raid mode" />
+  <Translation Id="TPAWhileCombat" Value="Teleportation canceled because {0} is in combat mode" />
+  <Translation Id="TPAWhileCombatYou" Value="Teleportation canceled because you are in combat mode" />
+  <Translation Id="TPAWhileRaid" Value="Teleportation canceled because {0} is in raid mode" />
+  <Translation Id="TPAWhileRaidYou" Value="Teleportation canceled because you are in raid mode" />
   <Translation Id="TPADead" Value="Teleportation canceled because you or {0} is dead" />
   <Translation Id="TPACave" Value="Teleportation canceled because {0} is in cave" />
+  <Translation Id="TPACaveYou" Value="Teleportation canceled because you are in cave" />
   <Translation Id="TPANoSentRequest" Value="You did not send any TPA request" />
   <Translation Id="TPACanceled" Value="Successfully canceled TPA request to {0}" />
   <Translation Id="TPADenied" Value="Successfully denied TPA request from {0}" />
   <Translation Id="TPASuccess" Value="You have been teleported to {0}" />
   <Translation Id="TPAYourself" Value="You cannot send TPA request to yourself" />
+  <Translation Id="TPAVehicle" Value="Teleportation canceled because {0} is in vehicle" />
+  <Translation Id="TPAVehicleYou" Value="Teleportation canceled because you are in vehicle" />
 </Translations>
 ```

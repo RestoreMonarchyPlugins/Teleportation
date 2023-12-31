@@ -42,7 +42,7 @@ jobs:
           mkdir -p ./release-template/Plugins ./release-template/Libraries
           mv $BUILD_DIRECTORY/$PLUGIN_FILE_NAME ./release-template/Plugins/
           [ -f $BUILD_DIRECTORY/*.dll ] && mv $BUILD_DIRECTORY/*.dll ./release-template/Libraries/
-          cd ./template/
+          cd ./release-template/
           zip -qr ./../release.zip *
         shell: bash
 

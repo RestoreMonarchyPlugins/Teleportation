@@ -6,8 +6,6 @@ on:
       - master
     paths:
       - Teleportation/**
-  workflow_dispatch:
-
 jobs:
   build:
     name: Create GitHub Release
@@ -37,12 +35,15 @@ jobs:
         run: sudo apt-get install zip
 
       - name: Zip Rocket release artifacts
+        env:
+          BUILD_DIRECTORY: "./${{ github.event.repository.name }}/bin/Release/net48/"
+          PLUGIN_FILE_NAME: "${{ github.event.repository.name }}.dll"
         run: |
-          mkdir -p ./template/Plugins ./template/Libraries
-          mv ./${{ github.event.repository.name }}/bin/Release/net48/${{ github.event.repository.name }}.dll ./template/Plugins/
-          [ -f ./${{ github.event.repository.name }}/bin/Release/net48/*.dll ] && mv ./${{ github.event.repository.name }}/bin/Release/net48/*.dll ./template/Libraries/
+          mkdir -p ./release-template/Plugins ./release-template/Libraries
+          mv $BUILD_DIRECTORY/$PLUGIN_FILE_NAME ./release-template/Plugins/
+          [ -f $BUILD_DIRECTORY/*.dll ] && mv $BUILD_DIRECTORY/*.dll ./release-template/Libraries/
           cd ./template/
-          zip -qr ./../${{ github.event.repository.name }}-v${{ steps.package_version.outputs.version }}.zip *
+          zip -qr ./../release.zip *
         shell: bash
 
       - name: Create release
@@ -62,7 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./${{ github.event.repository.name }}-v${{ steps.package_version.outputs.version }}.zip
+          asset_path: ./release.zip
           asset_name: "/${{ github.event.repository.name }}-v${{ steps.package_version.outputs.version }}.zip"
           asset_content_type: application/zip
           

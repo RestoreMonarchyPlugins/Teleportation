@@ -1,4 +1,3 @@
-[![Version](https://img.shields.io/github/release/RestoreMonarchyPlugins/Teleportation.svg)](https://github.com/RestoreMonarchyPlugins/Teleportation/releases)
 # Teleportation
 * Don't allow players to run away from combat or while raiding
 * Don't allow players to teleport while they are in cave or glitched underground
@@ -25,14 +24,14 @@ The only permission this plugin has is `tpa` for all teleportation actions (send
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <TeleportationConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <MessageColor>#ffff00</MessageColor>
-  <TPACooldown>15</TPACooldown>
-  <TPADelay>5</TPADelay>
+  <MessageColor>gray</MessageColor>
+  <TPACooldown>90</TPACooldown>
+  <TPADelay>3</TPADelay>
   <TPADuration>90</TPADuration>
   <AllowCave>false</AllowCave>
-  <AllowRaid>true</AllowRaid>
+  <AllowRaid>false</AllowRaid>
   <RaidDuration>30</RaidDuration>
-  <AllowCombat>true</AllowCombat>
+  <AllowCombat>false</AllowCombat>
   <CombatDuration>20</CombatDuration>
   <UseUnsafeTeleport>false</UseUnsafeTeleport>
   <CancelOnMove>true</CancelOnMove>

@@ -30,6 +30,7 @@ namespace RestoreMonarchy.Teleportation
             CombatDuration = 20;
             UseUnsafeTeleport = false;
             CancelOnMove = true;
+            MoveMaxDistance = 0.5f;
         }
     }
 }

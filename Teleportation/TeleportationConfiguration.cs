@@ -8,7 +8,8 @@ namespace RestoreMonarchy.Teleportation
         public double TPACooldown { get; set; }
         public double TPADelay { get; set; }
         public double TPADuration { get; set; }
-        public bool AllowCave { get; set; }
+        public bool AllowCave { get; set; } = true;
+        public bool ShouldSerializeAllowCave() => !AllowCave;
         public bool AllowRaid { get; set; }
         public double RaidDuration { get; set; }
         public bool AllowCombat { get; set; }
@@ -23,7 +24,7 @@ namespace RestoreMonarchy.Teleportation
             TPACooldown = 90;
             TPADelay = 3;
             TPADuration = 90;
-            AllowCave = false;
+            AllowCave = true;
             AllowRaid = false;
             RaidDuration = 30;
             AllowCombat = false;

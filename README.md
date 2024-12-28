@@ -25,10 +25,10 @@ The only permission this plugin has is `tpa` for all teleportation actions (send
 <?xml version="1.0" encoding="utf-8"?>
 <TeleportationConfiguration xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <MessageColor>gray</MessageColor>
+  <MessageIconUrl>https://i.imgur.com/wr879ca.png</MessageIconUrl>
   <TPACooldown>90</TPACooldown>
   <TPADelay>3</TPADelay>
   <TPADuration>90</TPADuration>
-  <AllowCave>false</AllowCave>
   <AllowRaid>false</AllowRaid>
   <RaidDuration>30</RaidDuration>
   <AllowCombat>false</AllowCombat>
@@ -42,32 +42,34 @@ The only permission this plugin has is `tpa` for all teleportation actions (send
 ```xml
 <?xml version="1.0" encoding="utf-8"?>
 <Translations xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <Translation Id="TargetNotFound" Value="Failed to find a target" />
-  <Translation Id="CombatStart" Value="Combat mode started" />
-  <Translation Id="CombatExpire" Value="Combat mode expired" />
-  <Translation Id="RaidStart" Value="Raid mode started" />
-  <Translation Id="RaidExpire" Value="Raid mode expired" />
-  <Translation Id="TPAHelp" Value="Use: /tpa &lt;player/accept/deny/cancel&gt;" />
-  <Translation Id="TPACooldown" Value="You have to wait {0} before you can send request again" />
-  <Translation Id="TPADuplicate" Value="You already sent a teleportation request to that player" />
-  <Translation Id="TPASent" Value="Successfully sent TPA request to {0}" />
-  <Translation Id="TPAReceive" Value="You received TPA request from {0}" />
-  <Translation Id="TPANoRequest" Value="There is no TPA requests to you" />
-  <Translation Id="TPAAccepted" Value="Successfully accepted TPA request from {0}" />
-  <Translation Id="TPADelay" Value="You will be teleported to {0} in {1} seconds" />
-  <Translation Id="TPAWhileCombat" Value="Teleportation canceled because {0} is in combat mode" />
-  <Translation Id="TPAWhileCombatYou" Value="Teleportation canceled because you are in combat mode" />
-  <Translation Id="TPAWhileRaid" Value="Teleportation canceled because {0} is in raid mode" />
-  <Translation Id="TPAWhileRaidYou" Value="Teleportation canceled because you are in raid mode" />
-  <Translation Id="TPADead" Value="Teleportation canceled because you or {0} is dead" />
-  <Translation Id="TPACave" Value="Teleportation canceled because {0} is in cave" />
-  <Translation Id="TPACaveYou" Value="Teleportation canceled because you are in cave" />
-  <Translation Id="TPANoSentRequest" Value="You did not send any TPA request" />
-  <Translation Id="TPACanceled" Value="Successfully canceled TPA request to {0}" />
-  <Translation Id="TPADenied" Value="Successfully denied TPA request from {0}" />
-  <Translation Id="TPASuccess" Value="You have been teleported to {0}" />
-  <Translation Id="TPAYourself" Value="You cannot send TPA request to yourself" />
-  <Translation Id="TPAVehicle" Value="Teleportation canceled because {0} is in vehicle" />
-  <Translation Id="TPAVehicleYou" Value="Teleportation canceled because you are in vehicle" />
+  <Translation Id="TargetNotFound" Value="Target not found" />
+  <Translation Id="CombatStart" Value="Combat mode activated" />
+  <Translation Id="CombatExpire" Value="Combat mode ended" />
+  <Translation Id="RaidStart" Value="Raid mode activated" />
+  <Translation Id="RaidExpire" Value="Raid mode ended" />
+  <Translation Id="TPAHelp" Value="[[b]]TPA Commands:[[/b]]&#xA;/tpa [[player]] - Send request&#xA;/tpa accept - Accept request&#xA;/tpa deny - Deny request&#xA;/tpa cancel - Cancel your request" />
+  <Translation Id="TPACooldown" Value="Please wait [[b]]{0}[[/b]] seconds before sending another request" />
+  <Translation Id="TPADuplicate" Value="You already have a pending request to this player" />
+  <Translation Id="TPASent" Value="TPA request sent to [[b]]{0}[[/b]]" />
+  <Translation Id="TPAReceive" Value="[[b]]{0}[[/b]] wants to teleport to you&#xA;Type [[b]]/tpa accept[[/b]] to allow" />
+  <Translation Id="TPANoRequest" Value="No pending TPA requests" />
+  <Translation Id="TPAAccepted" Value="Accepted [[b]]{0}'s[[/b]] TPA request" />
+  <Translation Id="TPADelay" Value="Teleporting to [[b]]{0}[[/b]] in [[b]]{1}[[/b]] seconds..." />
+  <Translation Id="TPAWhileCombat" Value="Teleport failed - [[b]]{0}[[/b]] is in combat" />
+  <Translation Id="TPAWhileCombatYou" Value="Teleport failed - You are in combat" />
+  <Translation Id="TPAWhileRaid" Value="Teleport failed - [[b]]{0}[[/b]] is in raid mode" />
+  <Translation Id="TPAWhileRaidYou" Value="Teleport failed - You are in raid mode" />
+  <Translation Id="TPADead" Value="Teleport failed - Player death detected" />
+  <Translation Id="TPACave" Value="Teleport failed - [[b]]{0}[[/b]] is in a cave" />
+  <Translation Id="TPACaveYou" Value="Teleport failed - You are in a cave" />
+  <Translation Id="TPAVehicle" Value="Teleport failed - [[b]]{0}[[/b]] is in a vehicle" />
+  <Translation Id="TPAVehicleYou" Value="Teleport failed - You are in a vehicle" />
+  <Translation Id="TPANoSentRequest" Value="You have no pending outgoing requests" />
+  <Translation Id="TPACanceled" Value="TPA request to [[b]]{0}[[/b]] canceled" />
+  <Translation Id="TPADenied" Value="Denied TPA request from [[b]]{0}[[/b]]" />
+  <Translation Id="TPACanceledSenderMoved" Value="Teleport canceled - [[b]]{0}[[/b]] moved" />
+  <Translation Id="TPACanceledYouMoved" Value="Teleport canceled - You moved" />
+  <Translation Id="TPASuccess" Value="Successfully teleported to [[b]]{0}[[/b]]" />
+  <Translation Id="TPAYourself" Value="You cannot send a TPA request to yourself" />
 </Translations>
 ```

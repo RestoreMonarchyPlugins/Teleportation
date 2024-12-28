@@ -10,25 +10,26 @@ namespace RestoreMonarchy.Teleportation.Utils
 {
     public static class TeleportationPluginExtensions
     {
-        public static void StartPlayerCombat(this TeleportationPlugin plugin, CSteamID steamID)
+        public static void StartPlayerCombat(this TeleportationPlugin pluginInstance, CSteamID steamID)
         {
-            if (plugin.CombatPlayers.TryGetValue(steamID, out Timer timer))
+            if (pluginInstance.CombatPlayers.TryGetValue(steamID, out Timer timer))
             {
                 timer.Enabled = false;
                 timer.Start();
             }
             else
             {
-                timer = new Timer(plugin.Configuration.Instance.CombatDuration * 1000);
-                plugin.CombatPlayers.Add(steamID, timer);
+                timer = new Timer(pluginInstance.Configuration.Instance.CombatDuration * 1000);
+                pluginInstance.CombatPlayers.Add(steamID, timer);
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    TaskDispatcher.QueueOnMainThread(() => plugin.StopPlayerCombat(steamID));
+                    TaskDispatcher.QueueOnMainThread(() => pluginInstance.StopPlayerCombat(steamID));
                 };
                 timer.Start();
 
-                UnturnedChat.Say(steamID, plugin.Translate("CombatStart"), plugin.MessageColor);                
+                pluginInstance.SendMessageToPlayer(steamID, "CombatStart");
+                UnturnedChat.Say(steamID, pluginInstance.Translate("CombatStart"), pluginInstance.MessageColor);                
             }
         }
 
@@ -38,41 +39,43 @@ namespace RestoreMonarchy.Teleportation.Utils
             {
                 timer.Dispose();
                 plugin.CombatPlayers.Remove(steamID);
-                UnturnedChat.Say(steamID, plugin.Translate("CombatExpire"), plugin.MessageColor);                
+                plugin.SendMessageToPlayer(steamID, "CombatExpire");
             }
         }
 
-        public static void StartPlayerRaid(this TeleportationPlugin plugin, CSteamID steamID)
+        public static void StartPlayerRaid(this TeleportationPlugin pluginInstance, CSteamID steamID)
         {
-            if (plugin.RaidPlayers.TryGetValue(steamID, out Timer timer))
+            if (pluginInstance.RaidPlayers.TryGetValue(steamID, out Timer timer))
             {
                 if (timer.Enabled)
+                {
                     timer.Enabled = false;
+                }   
 
                 timer.Start();
             }
             else
             {
-                timer = new Timer(plugin.Configuration.Instance.RaidDuration * 1000);
-                plugin.RaidPlayers.Add(steamID, timer);
+                timer = new Timer(pluginInstance.Configuration.Instance.RaidDuration * 1000);
+                pluginInstance.RaidPlayers.Add(steamID, timer);
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    TaskDispatcher.QueueOnMainThread(() => plugin.StopPlayerRaid(steamID));                    
+                    TaskDispatcher.QueueOnMainThread(() => pluginInstance.StopPlayerRaid(steamID));                    
                 };
                 timer.Start();
 
-                UnturnedChat.Say(steamID, plugin.Translate("RaidStart"), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(steamID, "RaidStart");
             }
         }
 
-        public static void StopPlayerRaid(this TeleportationPlugin plugin, CSteamID steamID)
+        public static void StopPlayerRaid(this TeleportationPlugin pluginInstance, CSteamID steamID)
         {
-            if (plugin.RaidPlayers.TryGetValue(steamID, out Timer timer))
+            if (pluginInstance.RaidPlayers.TryGetValue(steamID, out Timer timer))
             {
                 timer.Dispose();
-                plugin.RaidPlayers.Remove(steamID);
-                UnturnedChat.Say(steamID, plugin.Translate("RaidExpire"), plugin.MessageColor);
+                pluginInstance.RaidPlayers.Remove(steamID);
+                pluginInstance.SendMessageToPlayer(steamID, "RaidExpire");
             }
         }
 

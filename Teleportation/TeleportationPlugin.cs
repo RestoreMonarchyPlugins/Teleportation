@@ -1,6 +1,7 @@
 ﻿using RestoreMonarchy.Teleportation.Components;
 using RestoreMonarchy.Teleportation.Models;
 using RestoreMonarchy.Teleportation.Utils;
+using Rocket.API;
 using Rocket.API.Collections;
 using Rocket.Core.Plugins;
 using Rocket.Unturned;
@@ -32,6 +33,7 @@ namespace RestoreMonarchy.Teleportation
         {
             Instance = this;
             MessageColor = UnturnedChat.GetColorFromName(Configuration.Instance.MessageColor, Color.green);
+            
             TPRequests = new List<TPARequest>();
             CombatPlayers = new Dictionary<CSteamID, Timer>();
             RaidPlayers = new Dictionary<CSteamID, Timer>();
@@ -46,6 +48,7 @@ namespace RestoreMonarchy.Teleportation
             StructureManager.onDamageStructureRequested += OnStructureDamaged;
 
             Logger.Log($"{Name} {Assembly.GetName().Version} has been loaded!", ConsoleColor.Yellow);
+            Logger.Log("Check out more Unturned plugins at restoremonarchy.com");
         }       
 
         protected override void Unload()
@@ -139,37 +142,89 @@ namespace RestoreMonarchy.Teleportation
             this.StopPlayerCombat(player.CSteamID);
         }
 
+        internal void SendMessageToPlayer(CSteamID steamID, string translationKey, params object[] placeholder)
+        {
+            UnturnedPlayer player = UnturnedPlayer.FromCSteamID(steamID);
+            if (player.Player == null)
+            {
+                return;
+            }
+
+            SendMessageToPlayer(player, translationKey, placeholder);
+        }
+
+        internal void SendMessageToPlayer(IRocketPlayer player, string translationKey, params object[] placeholder)
+        {
+            if (player == null)
+            {
+                return;
+            }
+
+            string msg = Translate(translationKey, placeholder);
+            msg = msg.Replace("[[", "<").Replace("]]", ">");
+            if (player is ConsolePlayer)
+            {
+                Logger.Log(msg);
+                return;
+            }
+
+            UnturnedPlayer unturnedPlayer = (UnturnedPlayer)player;
+            if (unturnedPlayer != null)
+            {
+                ChatManager.serverSendMessage(msg, MessageColor, null, unturnedPlayer.SteamPlayer(), EChatMode.SAY, Configuration.Instance.MessageIconUrl, true);
+            }
+        }
+
         public override TranslationList DefaultTranslations => new TranslationList()
         {
-            { "TargetNotFound", "Failed to find a target" },
-            { "CombatStart", "Combat mode started" },
-            { "CombatExpire", "Combat mode expired" },
-            { "RaidStart", "Raid mode started" },
-            { "RaidExpire", "Raid mode expired" },
-            { "TPAHelp", "Use: /tpa <player/accept/deny/cancel>" },
-            { "TPACooldown", "You have to wait {0} before you can send request again" },
-            { "TPADuplicate", "You already sent a teleportation request to that player" },
-            { "TPASent", "Successfully sent TPA request to {0}" },
-            { "TPAReceive", "You received TPA request from {0}" },
-            { "TPANoRequest", "There is no TPA requests to you" },
-            { "TPAAccepted", "Successfully accepted TPA request from {0}" },
-            { "TPADelay", "You will be teleported to {0} in {1} seconds" },
-            { "TPAWhileCombat", "Teleportation canceled because {0} is in combat mode" },
-            { "TPAWhileCombatYou", "Teleportation canceled because you are in combat mode" },
-            { "TPAWhileRaid", "Teleportation canceled because {0} is in raid mode" },
-            { "TPAWhileRaidYou", "Teleportation canceled because you are in raid mode" },
-            { "TPADead", "Teleportation canceled because you or {0} is dead" },
-            { "TPACave", "Teleportation canceled because {0} is in cave" },
-            { "TPACaveYou", "Teleportation canceled because you are in cave" },
-            { "TPANoSentRequest", "You did not send any TPA request" },
-            { "TPACanceled", "Successfully canceled TPA request to {0}" },
-            { "TPADenied", "Successfully denied TPA request from {0}" },
-            { "TPASuccess", "You have been teleported to {0}" },
-            { "TPAYourself", "You cannot send TPA request to yourself" },
-            { "TPAVehicle", "Teleportation canceled because {0} is in vehicle" },
-            { "TPAVehicleYou", "Teleportation canceled because you are in vehicle" },
-            { "TPACanceledSenderMoved", "Teleportation canceled because {0} moved!" },
-            { "TPACanceledYouMoved", "Teleportation canceled because you moved!" },
+            // Basic notifications
+            { "TargetNotFound", "Target not found" },
+            { "CombatStart", "Combat mode activated" },
+            { "CombatExpire", "Combat mode ended" },
+            { "RaidStart", "Raid mode activated" },
+            { "RaidExpire", "Raid mode ended" },
+    
+            // TPA Command help
+            { "TPAHelp", "[[b]]TPA Commands:[[/b]]\n/tpa [[player]] - Send request\n/tpa accept - Accept request\n/tpa deny - Deny request\n/tpa cancel - Cancel your request" },
+    
+            // TPA Request messages
+            { "TPACooldown", "Please wait [[b]]{0}[[/b]] seconds before sending another request" },
+            { "TPADuplicate", "You already have a pending request to this player" },
+            { "TPASent", "TPA request sent to [[b]]{0}[[/b]]" },
+            { "TPAReceive", "[[b]]{0}[[/b]] wants to teleport to you\nType [[b]]/tpa accept[[/b]] to allow" },
+    
+            // TPA Status messages
+            { "TPANoRequest", "No pending TPA requests" },
+            { "TPAAccepted", "Accepted [[b]]{0}'s[[/b]] TPA request" },
+            { "TPADelay", "Teleporting to [[b]]{0}[[/b]] in [[b]]{1}[[/b]] seconds..." },
+    
+            // Combat/Raid related
+            { "TPAWhileCombat", "Teleport failed - [[b]]{0}[[/b]] is in combat" },
+            { "TPAWhileCombatYou", "Teleport failed - You are in combat" },
+            { "TPAWhileRaid", "Teleport failed - [[b]]{0}[[/b]] is in raid mode" },
+            { "TPAWhileRaidYou", "Teleport failed - You are in raid mode" },
+    
+            // Other restrictions
+            { "TPADead", "Teleport failed - Player death detected" },
+            { "TPACave", "Teleport failed - [[b]]{0}[[/b]] is in a cave" },
+            { "TPACaveYou", "Teleport failed - You are in a cave" },
+            { "TPAVehicle", "Teleport failed - [[b]]{0}[[/b]] is in a vehicle" },
+            { "TPAVehicleYou", "Teleport failed - You are in a vehicle" },
+    
+            // Request management
+            { "TPANoSentRequest", "You have no pending outgoing requests" },
+            { "TPACanceled", "TPA request to [[b]]{0}[[/b]] canceled" },
+            { "TPADenied", "Denied TPA request from [[b]]{0}[[/b]]" },
+    
+            // Movement related
+            { "TPACanceledSenderMoved", "Teleport canceled - [[b]]{0}[[/b]] moved" },
+            { "TPACanceledYouMoved", "Teleport canceled - You moved" },
+    
+            // Success message
+            { "TPASuccess", "Successfully teleported to [[b]]{0}[[/b]]" },
+    
+            // Invalid requests
+            { "TPAYourself", "You cannot send a TPA request to yourself" }
         };
     }
 }

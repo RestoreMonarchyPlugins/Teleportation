@@ -1,6 +1,5 @@
 ﻿using RestoreMonarchy.Teleportation.Utils;
 using Rocket.Core.Utils;
-using Rocket.Unturned.Chat;
 using Rocket.Unturned.Player;
 using Steamworks;
 using System;
@@ -9,19 +8,22 @@ namespace RestoreMonarchy.Teleportation.Models
 {
     public class TPARequest
     {
-        private TeleportationPlugin plugin => TeleportationPlugin.Instance;
+        private TeleportationPlugin pluginInstance => TeleportationPlugin.Instance;
 
         public TPARequest(CSteamID sender, CSteamID target)
         {
             Sender = sender;
             Target = target;
 
-            double duration = plugin.Configuration.Instance.TPADuration;
+            double duration = pluginInstance.Configuration.Instance.TPADuration;
             if (duration == 0)
             {
                 duration = 30;
             }
             ExpireDate = DateTime.Now.AddSeconds(duration);
+
+            SenderPlayer = UnturnedPlayer.FromCSteamID(sender);
+            TargetPlayer = UnturnedPlayer.FromCSteamID(target);
         }
 
         public TPARequest() { }
@@ -31,22 +33,22 @@ namespace RestoreMonarchy.Teleportation.Models
         public DateTime ExpireDate { get; set; }
         public bool IsCanceled { get; private set; }
 
-        public UnturnedPlayer SenderPlayer => UnturnedPlayer.FromCSteamID(Sender);
-        public UnturnedPlayer TargetPlayer => UnturnedPlayer.FromCSteamID(Target);
+        public UnturnedPlayer SenderPlayer { get; set; }
+        public UnturnedPlayer TargetPlayer { get; set; }
 
         public bool IsExpired => ExpireDate < DateTime.Now;
 
         public void Execute(double delay)
-        {            
+        {
             if (delay > 0)
             {
-                UnturnedChat.Say(Sender, plugin.Translate("TPADelay", TargetPlayer.DisplayName, delay), plugin.MessageColor);
-                if (plugin.Configuration.Instance.CancelOnMove)
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPADelay", TargetPlayer.DisplayName, delay);
+                if (pluginInstance.Configuration.Instance.CancelOnMove)
                 {
-                    plugin.MovementDetector.AddPlayer(SenderPlayer.Player, () =>
+                    pluginInstance.MovementDetector.AddPlayer(SenderPlayer.Player, () =>
                     {
-                        UnturnedChat.Say(Sender, plugin.Translate("TPACanceledYouMoved"), plugin.MessageColor);
-                        UnturnedChat.Say(Target, plugin.Translate("TPACanceledSenderMoved", SenderPlayer.DisplayName), plugin.MessageColor);
+                        pluginInstance.SendMessageToPlayer(SenderPlayer, "TPACanceledYouMoved");
+                        pluginInstance.SendMessageToPlayer(TargetPlayer, "TPACanceledSenderMoved", SenderPlayer.DisplayName);
                         Cancel();
                     });
                 }
@@ -55,66 +57,83 @@ namespace RestoreMonarchy.Teleportation.Models
             TaskDispatcher.QueueOnMainThread(() =>
             {
                 if (IsCanceled)
+                {
                     return;
+                }                    
 
-                plugin.MovementDetector.RemovePlayer(SenderPlayer.Player);
+                pluginInstance.MovementDetector.RemovePlayer(SenderPlayer.Player);
 
                 if (!Validate(true))
                 {
-                    plugin.Cooldowns.Remove(Sender);
+                    pluginInstance.Cooldowns.Remove(Sender);
                     return;
                 }
 
-                if (plugin.Configuration.Instance.UseUnsafeTeleport)
+                if (pluginInstance.Configuration.Instance.UseUnsafeTeleport)
                 {
                     SenderPlayer.Player.teleportToLocationUnsafe(TargetPlayer.Position, TargetPlayer.Rotation);
                 } else
                 {
                     SenderPlayer.Teleport(TargetPlayer);    
-                }                
-                
-                UnturnedChat.Say(Sender, plugin.Translate("TPASuccess", TargetPlayer.DisplayName), plugin.MessageColor);
+                }
+
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPASuccess", TargetPlayer.DisplayName);
 
             }, (float)delay);
         }
 
         public bool Validate(bool isFinal = false)
         {
-            var plugin = TeleportationPlugin.Instance;
+            var pluginInstance = TeleportationPlugin.Instance;
 
-            if (plugin.IsPlayerInCombat(SenderPlayer.CSteamID))
+            if (pluginInstance.IsPlayerInCombat(SenderPlayer.CSteamID))
             {
-                UnturnedChat.Say(SenderPlayer, plugin.Translate("TPAWhileCombatYou"), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPAWhileCombatYou");
                 if (isFinal)
-                    UnturnedChat.Say(TargetPlayer, plugin.Translate("TPAWhileCombat", SenderPlayer.DisplayName), plugin.MessageColor);
+                {
+                    pluginInstance.SendMessageToPlayer(TargetPlayer, "TPAWhileCombat", SenderPlayer.DisplayName);
+                }
+                    
                 return false;
             }
-            else if (plugin.IsPlayerInRaid(SenderPlayer.CSteamID))
+            else if (pluginInstance.IsPlayerInRaid(SenderPlayer.CSteamID))
             {
-                UnturnedChat.Say(SenderPlayer, plugin.Translate("TPAWhileRaidYou"), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPAWhileRaidYou");
                 if (isFinal)
-                    UnturnedChat.Say(TargetPlayer, plugin.Translate("TPAWhileRaid", SenderPlayer.DisplayName), plugin.MessageColor);
+                {
+                    pluginInstance.SendMessageToPlayer(TargetPlayer, "TPAWhileRaid", SenderPlayer.DisplayName);
+                }
+
                 return false;
             }
             else if (SenderPlayer.Dead || (TargetPlayer.Dead && isFinal))
             {
-                UnturnedChat.Say(SenderPlayer, plugin.Translate("TPADead", TargetPlayer.DisplayName), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPADead", TargetPlayer.DisplayName);
                 if (isFinal)
-                    UnturnedChat.Say(TargetPlayer, plugin.Translate("TPADead", SenderPlayer.DisplayName), plugin.MessageColor);
+                {
+                    pluginInstance.SendMessageToPlayer(TargetPlayer, "TPADead", SenderPlayer.DisplayName);
+                }
+
                 return false;
             }
-            else if (plugin.IsPlayerInCave(TargetPlayer))
+            else if (pluginInstance.IsPlayerInCave(TargetPlayer))
             {
-                UnturnedChat.Say(SenderPlayer, plugin.Translate("TPACave", TargetPlayer.DisplayName), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPACave", TargetPlayer.DisplayName);
                 if (isFinal)
-                    UnturnedChat.Say(TargetPlayer, plugin.Translate("TPACaveYou", SenderPlayer.DisplayName), plugin.MessageColor);
+                {
+                    pluginInstance.SendMessageToPlayer(TargetPlayer, "TPACaveYou", SenderPlayer.DisplayName);
+                }
+
                 return false;
             }
             else if (SenderPlayer.IsInVehicle)
             {
-                UnturnedChat.Say(SenderPlayer, plugin.Translate("TPAVehicleYou"), plugin.MessageColor);
+                pluginInstance.SendMessageToPlayer(SenderPlayer, "TPAVehicleYou");
                 if (isFinal)
-                    UnturnedChat.Say(TargetPlayer, plugin.Translate("TPAVehicle", SenderPlayer.DisplayName), plugin.MessageColor);
+                {
+                    pluginInstance.SendMessageToPlayer(TargetPlayer, "TPAVehicle", SenderPlayer.DisplayName);
+                }
+
                 return false;
             }
 

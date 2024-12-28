@@ -1,0 +1,11 @@
+name: Build & Create GitHub Release
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+
+jobs:
+  call-rocket-plugin-release:
+    uses: RestoreMonarchyPlugins/github-actions/.github/workflows/rocket-plugin-release.yml@master

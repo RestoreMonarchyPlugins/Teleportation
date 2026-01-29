@@ -29,7 +29,6 @@ namespace RestoreMonarchy.Teleportation.Utils
                 timer.Start();
 
                 pluginInstance.SendMessageToPlayer(steamID, "CombatStart");
-                UnturnedChat.Say(steamID, pluginInstance.Translate("CombatStart"), pluginInstance.MessageColor);                
             }
         }
 
@@ -50,7 +49,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 if (timer.Enabled)
                 {
                     timer.Enabled = false;
-                }   
+                }
 
                 timer.Start();
             }
@@ -61,7 +60,7 @@ namespace RestoreMonarchy.Teleportation.Utils
                 timer.AutoReset = false;
                 timer.Elapsed += (sender, e) =>
                 {
-                    TaskDispatcher.QueueOnMainThread(() => pluginInstance.StopPlayerRaid(steamID));                    
+                    TaskDispatcher.QueueOnMainThread(() => pluginInstance.StopPlayerRaid(steamID));
                 };
                 timer.Start();
 
